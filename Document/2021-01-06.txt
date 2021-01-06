@@ -1,8 +1,0 @@
-today i practice the previous day's commands in differen repository.
-also try some new command.
-
-i get 3 error during the command execution but i solve it using youtube 
-and ask some friends.
-
-i also learn revert command and  it's uses.
- 
