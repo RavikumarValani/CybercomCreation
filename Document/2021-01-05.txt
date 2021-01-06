@@ -1,0 +1,40 @@
+i first learn why and when to use git.
+today i learn,
+1.how to create repository and branch and why we require repository and branch.
+2.how to generate SSh key
+	it is used to coonect and connect and authenticate to remote servers and services.
+        using ssh key i am also connect with github without username.
+3.also some commands like
+	1.mkdit filename ->it is used create directory.
+
+	2.git clone sshRepoName -> it is used to create copy of target repository.
+
+	3.cd projectName -> it is used for change the directory.
+	(using (pwd) command we also see the path).
+
+	4.git remote -v ->it give the list named remote repositories.(Remote repository can 
+	have any name.It’s common practice to name the remote repository ‘origin’.)
+
+	5.git fetch origin -> it give the latest update in repository and display the branches.
+
+	6.git checkout -b BranchName origin/main -> it is used to create branch and directly switches to it.
+
+	7.git status -> it is used to check modification and new file into working directory.
+
+	8.git add index.php(index.php is untracked file) -> it is used to adds a change in the working 
+	directory to the staging area.changes are not actually recorded until you run git commit.
+
+	9.git commit -m "added echo in index file" -> it is used to immediately creates a commit with a
+	passed commit message.(in git commit, it launch a text editor and then save the file and close 
+	editor to create actual commit).
+
+	10.git push origin branchName -> it is used to push your local changes to online repository.
+
+	11.git checkout branchname ->it is used to switch the branch that you want
+
+	12.git fetch origin -> when team member has added some new features to your remote repository
+	So, to add these updates to your local repository,use this command.
+
+	13.git merge --no-ff origin/branchName ->it is used for merge(--no-ff flag helps create a more 
+	readable history. It allows you to put tags that clearly shows where the merges occurred. 
+	It can save you time and effort during debugging.
