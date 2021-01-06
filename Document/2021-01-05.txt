@@ -18,6 +18,8 @@ today i learn,
 	5.git fetch origin -> it give the latest update in repository and display the branches.
 
 	6.git checkout -b BranchName origin/main -> it is used to create branch and directly switches to it.
+	(Running this command i get error :"'origin/main' is not a commit and a branch 'batman-bike' cannot be 
+	created from it" then i solve it using some git's website)
 
 	7.git status -> it is used to check modification and new file into working directory.
 
