@@ -1,0 +1,46 @@
+h1{
+    text-align: center;
+    padding-top: 10%;
+}
+p{
+    text-align: center;
+    font-weight: bold;
+}
+.container{
+    text-align: center;
+    
+
+}
+.imagebox{
+    display: inline-block;
+    border: 1px solid rgb(166, 172, 172);
+    background: rgb(166, 172, 172);
+    margin: 26px auto;
+    padding-bottom: 20px;
+    margin-right: 10px;
+}
+.image{
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    text-align: center;
+    padding-top: 20px;
+}
+.paragraph{
+    font-weight: normal;
+    padding: 10px;
+}
+.horizontalline{
+    margin-left: 15px;
+    margin-right: 15px;
+    text-align: center;
+
+}
+.owner{
+    font-size: 12px;
+    opacity: 0.5;
+    display: inline;
+}
+h3{
+    display: inline;
+}
