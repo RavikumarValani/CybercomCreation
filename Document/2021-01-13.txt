@@ -1,0 +1,8 @@
+Today i learn some more topic of javascript like event,DOM and how to use Html and CSS in javascript.
+
+Then i complete Javascript task.
+
+I also explore about session storage and local storage and feature of HTML5.
+
+I learn some of the tag in HTML5 like audio and video.
+
