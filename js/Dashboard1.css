@@ -1,0 +1,15 @@
+.slide_bar{
+    display: block;
+    background-color: orange;
+    height: 500px;
+    width: 200px;
+}
+.sub_title{
+    font-weight: bolder;
+    color: white;
+    padding: 10px;
+}
+.center_details{
+    text-align: center;
+    padding-top: 10px;
+}
