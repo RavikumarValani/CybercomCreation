@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registeration</title>
+</head>
+<body>
+    <form class="reg_container" action="login.html">
+        <fieldset>
+            <input type="text" name="name" id="admin_name" placeholder="Name" required>
+            <br>
+            <input type="email" name="email" id="email" placeholder="Email" required>
+            <br>
+            <input type="password" name="pass" id="pass" placeholder="Password" required>
+            <br>
+            <input type="password" name="con_pass" id="con_pass" placeholder="Confirm Password" required>
+            <br>
+            <select name="city" id="sel_city">
+                <option value="city">Select City</option>
+                <option value="rajkot">Rajkot</option>
+                <option value="ahmedabad">Ahmedabad</option>
+                <option value="surat">Surat</option>
+                <option value="gondal">Gondal</option>
+            </select>
+            <br>
+            <select name="state" id="sel_state">
+                <option value="state">Select State</option>
+                <option value="gujrat">Gujrat</option>
+                <option value="punjab">Punjab</option>
+                <option value="delhi">Delhi</option>
+                <option value="goa">Goa</option>
+            </select>
+            <br>
+            <input type="checkbox" id="term_condition" onchange="document.getElementById('Register').disabled = !this.checked;">
+            <label for="term_condition">Terms & Condition</label>
+            <br>
+            <input type="submit" name="register" id="Register" value="Register" disabled>
+        </fieldset>
+    </form>
+</body>
+</html>
