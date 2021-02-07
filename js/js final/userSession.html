@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="/css/user.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UserSession</title>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li>
+                <h4 id="user_name">Hello,</h4>
+            </li>
+            <li>
+                <a href="Dashboard.html">Dashboard</a>
+            </li>
+            <li>
+                <a href="user.html">User</a>
+            </li>
+            <li>
+                <a href="userSession.html">Login<br> Session</a>
+            </li>
+            <li>
+                <a class="curser" onclick="logout();">Logout</a>
+            </li>
+        </ul>
+    </nav>
+    <h4 class="pb-20">User List</h4>
+    <table id="userTable" class="table">
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Login Date Time</th>
+            <th scope="col">Logout Date Time</th>
+        </tr>
+        <tr>
+            <th>Ravi</th>
+            <td>login time </td>
+             <td>logout time </td>
+        </tr>
+    </table>
+    <script src="/js/userData.js"></script>
+</body>
+</html>

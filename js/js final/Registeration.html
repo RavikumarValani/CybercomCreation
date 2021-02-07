@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="/css/registration.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registeration</title>
+</head>
+<body>
+    <form  action="login.html" onsubmit="return storeData()">
+        <div class="reg_container">
+        <fieldset>
+            <h1>registration</h1>
+            <input type="text" name="name" class="field" id="admin_name" placeholder="Name" required>
+            <br><br>
+            <input type="email" name="email" class="field"  id="enter_email" placeholder="Email" required>
+            <br><br>
+            <input type="password" name="pass" class="field" id="enter_pass" placeholder="Password" required>
+            <br><br>
+            <input type="password" name="con_pass" class="field" id="con_pass" placeholder="Confirm Password" required>
+            <br><br>
+            <select name="city" class="field" id="sel_city">
+                <option value="city" selected>Select City</option>
+                <option value="rajkot">Rajkot</option>
+                <option value="ahmedabad">Ahmedabad</option>
+                <option value="surat">Surat</option>
+                <option value="gondal">Gondal</option>
+            </select>
+            <br><br>
+            <select name="state" class="field" id="sel_state">
+                <option value="state" selected>Select State</option>
+                <option value="gujrat">Gujrat</option>
+                <option value="punjab">Punjab</option>
+                <option value="delhi">Delhi</option>
+                <option value="goa">Goa</option>
+            </select>
+            <br><br>
+            <input type="checkbox" id="term_condition" onchange="document.getElementById('Register').disabled = !this.checked;">
+            <label for="term_condition">Terms & Condition</label>
+            <br><br>
+            <input type="submit" class="reg_button"  name="register" id="Register" value="Register" disabled>
+        </fieldset>
+        </div>
+    </form>
+    <script src="/js/registration.js"></script>
+</body>
+</html>

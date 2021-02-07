@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <link rel="stylesheet" href="/css/Dashboard.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+</head>
+<body>  
+    <nav>
+        <ul>
+            <li>
+                <h4 id="user_name">Hello,</h4>
+            </li>
+            <li>
+                <a href="Dashboard.html">Dashboard</a>
+            </li>
+            <li>
+                <a href="user.html">User</a>
+            </li>
+            <li>
+                <a href="userSession.html">Login<br> Session</a>
+            </li>
+            <li>
+                <a class="ans" onclick="logout();">Logout</a>
+            </li>
+        </ul>
+    </nav>
+        <h1>Dashboard</h1>
+        <div class="user_details">
+            <div class="fbox">
+                <p class="year">User &lt 18 years</p><br>
+                <p class="user_count">12 Users</p>
+            </div>
+            <div class="sbox">
+                <p class="year">18-50 years Users</p><br>
+                <p class="user_count">30 Users</p>
+            </div>
+            <div class="tbox">
+                <p class="year">User &gt 50 years</p><br>
+                <p class="user_count">25 Users</p>
+            </div>
+            <p class="birth_user">Today's is ABC Birthday </p>
+            
+        </div>
+        <script src="/js/userData.js"></script>
+</body>
+</html>

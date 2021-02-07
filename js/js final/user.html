@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Users List</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/user.css">
+
+</head>
+
+<body>
+    <nav>
+        <ul>
+            <li>
+                <h4 id="user_name">Hello,</h4>
+            </li>
+            <li>
+                <a href="Dashboard.html">Dashboard</a>
+            </li>
+            <li>
+                <a href="user.html">User</a>
+            </li>
+            <li>
+                <a href="userSession.html">Login<br> Session</a>
+            </li>
+            <li>
+                <a class="curser" onclick="logout();">Logout</a>
+            </li>
+        </ul>
+    </nav>
+    <h2>Add User</h2>
+    <form class="container">
+        <input type="text" id="name" placeholder="Enter Name" required>
+        <input type="text" id="email" placeholder="Enter Email Id" required>
+        <input type="password" id="pass" placeholder="Enter Password" required>
+        <input type="date" id="date" placeholder="Enter Birthdate" required><br><br>
+        <button type="submit" class="btn_add" id="btnAddUser" onclick="newUser()" onload="fechUser()">Add User</button>
+    </form>
+    <h2>User list</h2>
+    <table id="show">
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Password</th>
+            <th>Birthdate</th>
+            <th>Age</th>
+            <th>Action</th>
+        <tr>
+        <tr>
+            <td>Ravi</td>
+            <td>abc@g</td>
+            <td>12</td>
+            <td>05/03/1999</td>
+            <td id="age">22</td>
+            <td>
+                <button type="button" class="btn" onclick="updateUser()"> Update </button>
+                <button type="button" class="btn" onclick="deleteUser()"> Delete </button>
+            </td>
+        </tr>
+    </table>
+</body>
+<script src="/js/userData.js"></script>
+

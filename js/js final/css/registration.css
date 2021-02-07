@@ -1,0 +1,16 @@
+h1{
+    text-align: center;
+}
+.field{
+    width: 200px;
+    height: 20px;
+    
+}
+.reg_container{
+    text-align: center;
+}
+.reg_button{
+    background-color: orange;
+    width: 200px;
+    height: 20px;
+}

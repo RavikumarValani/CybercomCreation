@@ -1,0 +1,59 @@
+nav{
+    position: fixed;
+    height: 100%;
+    background-color: orange;
+
+}
+li{
+    list-style: none;
+    font-size: 20px;
+    padding: 10px;
+    color: white;
+}
+h1{
+    margin-left: 150px;
+}
+.user_details{
+    display: flex;
+    margin-left: 200px  
+                                            ;
+}
+.fbox{
+    border: 1px solid black;
+    height: 100px;
+    width: 200px;
+    background-color:rgb(233, 187, 101) ;
+}
+.tbox{
+    border: 1px solid black;
+    height: 100px;
+    width: 200px;
+    background-color:rgb(233, 187, 101) ;
+}
+.sbox{
+    border: 1px solid black;
+    height: 100px;
+    width: 200px;
+    background-color:rgb(233, 187, 101) ;
+}
+.year{
+    font-weight: bold;
+    font-size: 10px;
+    text-align: center;
+}
+.user_count{
+    text-align: center;
+    font-weight: bolder;
+    font-size: 15px;
+}
+.birth_user{
+    padding-top: 150px;
+    
+}
+a{
+    text-decoration: none;
+    color: white;
+}
+.ans{
+    cursor: pointer;
+}

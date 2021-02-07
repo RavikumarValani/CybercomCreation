@@ -1,0 +1,43 @@
+a{
+    text-decoration: none;
+    color: white;
+}
+li{
+    list-style: none;
+    font-size: 20px;
+    padding: 10px;
+    color: white;
+}
+nav{
+    position: fixed;
+    height: 100%;
+    background-color: orange;
+
+}
+h2{
+    margin-left: 200px;
+}
+.container{
+    
+    margin-left: 200px;
+}
+.btn_add{
+    margin-left:600px ;
+    width: 100px;
+    height: 30px;
+}
+table{
+    text-align: center;
+    margin-left: 300px;
+    border: 1px solid black;
+}
+th{
+    background-color: rgb(82, 75, 75);
+    color: white;
+}
+td{
+    border: 1px solid black;
+}
+.curser{
+    cursor: pointer;
+}
