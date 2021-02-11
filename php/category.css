@@ -1,0 +1,51 @@
+.section{
+    text-align: right;
+}
+.sc1{
+    border: 1px solid black;
+    border-radius: 10px;
+    background-color: rgb(151, 219, 151);
+    display:inline-block;
+    height: 20px;
+    width: 130px;
+}
+h4{
+    text-align: center;
+    
+}
+.sc2{
+    border: 1px solid black;
+    border-radius: 10px;
+    background-color: rgb(153, 153, 228);
+    display:inline-block;
+    height: 20px;
+    width: 130px;
+}
+.sc3{
+    border: 1px solid black;
+    border-radius: 10px;
+    background-color: rgb(218, 165, 165);
+    display:inline-block;
+    height: 20px;
+    width: 130px;
+}
+a{
+    text-decoration: none;
+    text-align: center;
+    color: black;
+}
+.sc4{
+    border: 1px solid black;
+    border-radius: 10px;
+    background-color: rgb(153, 153, 228);
+    display:inline-block;
+    height: 25px;
+    width: 130px;
+    padding: 2px;
+    margin-bottom: 10px;
+}
+table,th,td{
+    padding: 5px;
+    border: 1px solid black;
+    text-align: center;
+}

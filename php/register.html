@@ -1,0 +1,55 @@
+<!DOCTYPE HTML>
+<head>
+    <link rel="stylesheet" href="register.css" />
+	<meta http-equiv="content-type" content="text/html" />
+	<meta name="author" content="lolkittens" />
+
+	<title>Register</title>
+</head>
+<body>
+    <form action="addData.php" method="GET" >
+        <fieldset>
+            <h1>Registration</h1>
+            <div class="prefix">
+            <label for="Prefix">Prefix</label>
+            <select id="prefix" name="prefix">
+                <option value="true">1</option>
+                <option value="false">2</option>
+            </select>
+            </div>
+            <div class="input-group">
+            <label for="First_Name">First Name</label>
+            <input type="text" name="fname" id="fname"  required/>
+            </div>
+            <div class="input-group">
+            <label for="Last_Name">Last Name</label>
+            <input type="text" name="lname" id="lname" required/>
+            </div>
+            <div class="input-group">
+            <label for="Email">Email</label>
+            <input type="email" name="email" id="email" />
+            </div>
+            <div class="input-group">
+            <label for="Mobile_Number">Mobile Number</label>
+            <input type="text" name="mobileno" id="mobileno" maxlength="10"  min="10" required />
+            </div>
+            <div class="input-group">
+            <label for="Password">Password</label>
+            <input type="password" name="pwd" id="pwd"/>
+            </div>
+            <div class="input-group">
+            <label for="Confirm_Password">Confirm Password</label>
+            <input type="password" name="cpwd" id="cpwd" required />
+            </div>
+            <div class="input-group">
+            <label for="Information">Information</label>
+            <textarea id="info" name="info" required></textarea>
+            </div>
+            <input type="checkbox" id="term_condition" onchange="document.getElementById('submit').disabled = !this.checked;">
+            <label for="term_condition">Hereby, I Accept Terms & Conditions.</label>
+            <br /><br />
+            <input type="submit" class="btn" name="submit" id="submit"  value="SUBMIT" disabled>
+        </fieldset>
+    </form>
+</body>
+</html>

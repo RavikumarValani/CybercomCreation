@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<head>
+    <link rel="stylesheet" href="register.css" />
+	<meta http-equiv="content-type" content="text/html" />
+	<meta name="author" content="lolkittens" />
+	<title>Untitled 3</title>
+</head>
+<body>
+    <form method="post" action="categorytable.php">
+        <fieldset>
+            <h1>Add New Category</h1>
+            <div class="input-group">
+            <label for="title">Title</label>
+            <input type="text" name="title" id="title" required />
+            </div>
+            <div class="input-group">
+            <label for="Content">Content</label>
+            <textarea id="content" name="content" required></textarea>
+            </div>
+            <div class="input-group">
+            <label for="url">URL</label>
+            <input type="text" name="url" id="url" required />
+            </div>
+            <div class="input-group">
+            <label for="metatitle"> Meta Title</label>
+            <input type="text" name="mtitle" id="mtitle" required />
+            </div>
+            <div class="prefix">
+            <label for="category">Parent Category</label>
+            <select id="category" name="category" required="true">
+                <option value="category" selected></option>
+                <option value="lifestyle">Lifestyle</option>
+                <option value="Health">health</option>
+                <option value="education">Education</option>
+                <option value="music">Music</option>
+            </select>
+            </div>
+            <br />
+            <div class="upload">
+                <label for="image">Image</label>
+                <input type="file" value="Upload Image" name="upload"/>
+            </div>
+            <input type="submit" style="background-color: blue;"  class="btn" name="submit" value="SUBMIT" />
+            
+        </fieldset>
+    </form>
+</body>
+</html>
