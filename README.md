@@ -1,2 +1,0 @@
-# CybercomCreation
-for reporting

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 13, 2021 at 05:37 PM
+-- Generation Time: Apr 07, 2021 at 06:17 AM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.2.34
 
@@ -28,23 +28,21 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `admin` (
-  `id` int(4) NOT NULL,
-  `username` varchar(20) NOT NULL,
-  `password` varchar(10) NOT NULL,
-  `status` tinyint(2) NOT NULL,
-  `createddate` date NOT NULL
+  `adminId` int(11) NOT NULL,
+  `username` varchar(32) NOT NULL,
+  `password` varchar(32) NOT NULL,
+  `status` tinyint(1) NOT NULL,
+  `createddate` datetime(6) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `admin`
 --
 
-INSERT INTO `admin` (`id`, `username`, `password`, `status`, `createddate`) VALUES
-(1, 'admin', 'admin', 0, '2021-03-05'),
-(2, 'admin2', '123', 1, '2021-02-25'),
-(3, 'admin3', '123', 0, '2021-02-25'),
-(5, 'admin12', '123', 1, '2021-03-05'),
-(6, 'admin3a', '123', 1, '2021-03-05');
+INSERT INTO `admin` (`adminId`, `username`, `password`, `status`, `createddate`) VALUES
+(1, 'ravi', '54646bnvbcg', 1, '2021-04-06 10:08:56.000000'),
+(2, 'sahil', 'bgfbgf2215', 1, '2021-04-06 10:09:23.000000'),
+(3, 'vijay', 'dvdf', 1, '2021-04-06 10:09:37.000000');
 
 -- --------------------------------------------------------
 
@@ -54,13 +52,13 @@ INSERT INTO `admin` (`id`, `username`, `password`, `status`, `createddate`) VALU
 
 CREATE TABLE `attribute` (
   `attributeId` int(11) NOT NULL,
-  `name` varchar(20) NOT NULL,
+  `name` varchar(32) NOT NULL,
   `entityTypeId` enum('product','category') NOT NULL,
-  `code` varchar(20) NOT NULL,
-  `inputType` varchar(20) NOT NULL,
-  `backEndType` varchar(40) NOT NULL,
+  `code` varchar(16) NOT NULL,
+  `inputType` varchar(16) NOT NULL,
+  `backEndType` varchar(16) NOT NULL,
   `sortOrder` int(4) NOT NULL,
-  `backEndModel` int(255) DEFAULT NULL
+  `backEndModel` varchar(64) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -68,8 +66,11 @@ CREATE TABLE `attribute` (
 --
 
 INSERT INTO `attribute` (`attributeId`, `name`, `entityTypeId`, `code`, `inputType`, `backEndType`, `sortOrder`, `backEndModel`) VALUES
-(3, 'color', 'product', 'color', '0', '1', 1, 0),
-(4, 'brand', 'product', 'brand', '2', '2', 1, 0);
+(1, 'color', 'product', 'color', 'Radio', 'Text', 1, 'attribute_option'),
+(2, 'type', 'product', 'type', 'Text Box', 'Varchar', 2, 'attribute_option'),
+(3, 'brand', 'product', 'brand', 'Text Box', 'Varchar', 2, 'attribute_option'),
+(4, 'Material', 'product', 'Material', 'Select', 'Varchar', 2, 'attribute_option'),
+(6, 'style', 'product', 'style', 'Radio', 'Varchar', 2, 'attribute_option');
 
 -- --------------------------------------------------------
 
@@ -79,7 +80,7 @@ INSERT INTO `attribute` (`attributeId`, `name`, `entityTypeId`, `code`, `inputTy
 
 CREATE TABLE `attribute_option` (
   `optionId` int(11) NOT NULL,
-  `name` varchar(40) NOT NULL,
+  `name` varchar(32) NOT NULL,
   `attributeId` int(11) NOT NULL,
   `sortOrder` varchar(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -89,9 +90,72 @@ CREATE TABLE `attribute_option` (
 --
 
 INSERT INTO `attribute_option` (`optionId`, `name`, `attributeId`, `sortOrder`) VALUES
-(1, 'gree', 3, '1'),
-(2, 'blue', 3, '2'),
-(3, 'green', 3, '1');
+(1, 'black', 1, '1'),
+(2, 'white', 1, '2'),
+(3, 'green', 1, '3'),
+(4, 'red', 1, '2'),
+(5, 'yellow', 1, '2'),
+(6, 'Hp', 3, '2'),
+(7, 'Lenovo', 3, '1');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cart`
+--
+
+CREATE TABLE `cart` (
+  `cartId` int(11) NOT NULL,
+  `customerId` int(11) NOT NULL,
+  `paymentmethodId` int(11) NOT NULL,
+  `shippingmethodId` int(11) NOT NULL,
+  `shippingAmount` decimal(6,2) NOT NULL,
+  `total` decimal(16,2) NOT NULL,
+  `discount` decimal(16,2) NOT NULL,
+  `createddate` datetime(6) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cart_address`
+--
+
+CREATE TABLE `cart_address` (
+  `cartAddressId` int(11) NOT NULL,
+  `addressId` int(11) DEFAULT NULL,
+  `customerId` int(11) NOT NULL,
+  `cartId` int(11) DEFAULT NULL,
+  `address` varchar(64) NOT NULL,
+  `city` varchar(16) NOT NULL,
+  `state` varchar(16) NOT NULL,
+  `country` varchar(16) NOT NULL,
+  `zip` int(6) DEFAULT NULL,
+  `type` enum('shipping','billing') NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `cart_address`
+--
+
+INSERT INTO `cart_address` (`cartAddressId`, `addressId`, `customerId`, `cartId`, `address`, `city`, `state`, `country`, `zip`, `type`) VALUES
+(1, NULL, 0, NULL, '', '', '', '', NULL, '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cart_item`
+--
+
+CREATE TABLE `cart_item` (
+  `itemId` int(11) NOT NULL,
+  `cartId` int(11) DEFAULT NULL,
+  `productId` int(11) DEFAULT NULL,
+  `quantity` int(16) NOT NULL,
+  `price` decimal(16,2) NOT NULL,
+  `discount` decimal(16,2) NOT NULL,
+  `createddate` datetime(6) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -100,28 +164,96 @@ INSERT INTO `attribute_option` (`optionId`, `name`, `attributeId`, `sortOrder`) 
 --
 
 CREATE TABLE `category` (
-  `id` int(4) NOT NULL,
-  `name` varchar(30) NOT NULL,
-  `status` varchar(8) NOT NULL,
-  `description` varchar(100) NOT NULL,
-  `parentId` int(11) NOT NULL,
+  `categoryId` int(11) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `parentId` int(11) DEFAULT NULL,
   `pathId` varchar(100) DEFAULT NULL,
-  `createddate` date DEFAULT NULL,
-  `updateddate` date DEFAULT NULL
+  `status` tinyint(1) NOT NULL DEFAULT 1,
+  `description` varchar(200) DEFAULT NULL,
+  `createddate` datetime(6) NOT NULL,
+  `updateddate` datetime(6) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `category`
 --
 
-INSERT INTO `category` (`id`, `name`, `status`, `description`, `parentId`, `pathId`, `createddate`, `updateddate`) VALUES
-(1, 'camera', '0', 'abc', 0, NULL, '2021-02-26', '2021-02-26'),
-(2, 'mobile', '1', 'Best for Today', 0, NULL, NULL, NULL),
-(3, 'camera', '1', 'abc', 0, NULL, NULL, NULL),
-(4, 'Mobile', 'Enable', 'best mobile for this summer', 0, NULL, NULL, NULL),
-(5, 'pen', '1', 'good for writting', 0, NULL, NULL, NULL),
-(25, 'camera1', '0', 'zx', 0, NULL, '2021-03-12', NULL),
-(26, 'camera1', '0', 'bh', 0, NULL, '2021-03-13', NULL);
+INSERT INTO `category` (`categoryId`, `name`, `parentId`, `pathId`, `status`, `description`, `createddate`, `updateddate`) VALUES
+(1, 'bedroom', 0, '1', 1, 'abc', '2021-04-04 04:18:07.000000', NULL),
+(2, 'beds', 1, '1=2', 1, 'abc', '2021-04-06 07:06:06.000000', NULL),
+(3, 'panel beds', 2, '1=2=3', 1, 'a', '2021-04-06 08:09:01.000000', NULL),
+(4, 'kitchen', 0, '4', 1, 'a', '2021-04-06 08:04:04.000000', NULL),
+(5, 'dining table', 4, '4=5', 1, 'a', '2021-04-06 08:04:20.000000', NULL),
+(6, 'fridge', 4, '4=6', 1, 'a', '2021-04-06 08:04:47.000000', NULL),
+(7, 'footboard', 3, '1=2=3=7', 1, 'a', '2021-04-06 08:05:26.000000', NULL),
+(8, 'headboard', 3, '1=2=3=8', 1, 'a', '2021-04-06 08:05:42.000000', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cms_page`
+--
+
+CREATE TABLE `cms_page` (
+  `pageId` int(11) NOT NULL,
+  `title` varchar(32) NOT NULL,
+  `identifier` int(11) NOT NULL,
+  `content` varchar(200) NOT NULL,
+  `status` tinyint(1) NOT NULL,
+  `createddate` datetime(6) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `cms_page`
+--
+
+INSERT INTO `cms_page` (`pageId`, `title`, `identifier`, `content`, `status`, `createddate`) VALUES
+(1, 'abc', 0, 'abc', 0, '0000-00-00 00:00:00.000000');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `config`
+--
+
+CREATE TABLE `config` (
+  `configId` int(11) NOT NULL,
+  `groupId` int(11) NOT NULL,
+  `title` varchar(32) NOT NULL,
+  `code` varchar(16) NOT NULL,
+  `value` varchar(16) NOT NULL,
+  `createddate` datetime(6) NOT NULL,
+  `updateddate` datetime(6) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `config`
+--
+
+INSERT INTO `config` (`configId`, `groupId`, `title`, `code`, `value`, `createddate`, `updateddate`) VALUES
+(1, 5, 'website', 'web_site', 'web', '2021-04-05 10:20:28.000000', '2021-04-05 10:20:28.000000');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `config_group`
+--
+
+CREATE TABLE `config_group` (
+  `entityId` int(11) NOT NULL,
+  `groupId` int(11) NOT NULL,
+  `name` varchar(32) NOT NULL,
+  `createddate` datetime(6) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `config_group`
+--
+
+INSERT INTO `config_group` (`entityId`, `groupId`, `name`, `createddate`) VALUES
+(3, 5, 'a1', '2021-04-05 10:19:35.000000'),
+(4, 5, 'a2', '2021-04-05 10:19:47.000000'),
+(5, 5, 'a3', '2021-04-05 10:19:47.000000');
 
 -- --------------------------------------------------------
 
@@ -131,27 +263,28 @@ INSERT INTO `category` (`id`, `name`, `status`, `description`, `parentId`, `path
 
 CREATE TABLE `customer` (
   `customerId` int(11) NOT NULL,
-  `addressId` int(11) DEFAULT NULL,
   `groupId` int(11) DEFAULT NULL,
-  `firstname` text NOT NULL,
-  `lastname` text NOT NULL,
-  `email` varchar(30) NOT NULL,
-  `password` varchar(20) NOT NULL,
+  `firstname` varchar(16) NOT NULL,
+  `lastname` varchar(16) NOT NULL,
+  `email` varchar(32) NOT NULL,
+  `password` varchar(32) NOT NULL,
   `mobile` int(10) NOT NULL,
-  `status` text NOT NULL,
-  `createddate` date DEFAULT NULL,
-  `updateddate` date DEFAULT NULL
+  `status` tinyint(1) NOT NULL,
+  `createddate` datetime(6) NOT NULL,
+  `updateddate` datetime(6) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `customer`
 --
 
-INSERT INTO `customer` (`customerId`, `addressId`, `groupId`, `firstname`, `lastname`, `email`, `password`, `mobile`, `status`, `createddate`, `updateddate`) VALUES
-(1, 1, 3, 'Ajay', 'vala', 'va@va', '123', 1234567899, '1', '2021-03-13', '0000-00-00'),
-(2, 2, 3, 'ravi', 'valani', 'va@va', '123', 1234567899, '1', '2021-03-13', '0000-00-00'),
-(7, 3, 3, 'sahil', 'soni', 'va@va', '123', 12, '0', '2021-03-13', NULL),
-(8, 2, 3, 'manan', 'vasoya', 'va@va', 'kkkk', 789, '0', NULL, NULL);
+INSERT INTO `customer` (`customerId`, `groupId`, `firstname`, `lastname`, `email`, `password`, `mobile`, `status`, `createddate`, `updateddate`) VALUES
+(1, 1, 'ravi', 'valani', 'valani@gmail.com', '123456', 2147483647, 1, '2021-04-06 16:04:10.000000', '2021-04-06 16:04:10.000000'),
+(2, 2, 'ajay', 'jadav', 'jadav@gmail.com', 'okjk56', 2147483647, 1, '2021-04-06 09:13:46.000000', '2021-04-06 09:13:46.000000'),
+(3, 3, 'sahil', 'vasoya', 'vasoya@gmail.com', 'mnmnkmd66', 2147483647, 1, '2021-04-04 12:38:27.000000', NULL),
+(4, 1, 'jecky', 'samani', 'jecky@gmail.com', '123jjgh56', 2147483647, 1, '2021-04-04 12:38:30.000000', NULL),
+(5, 2, 'manan', 'soni', 'soni@gmail.com', 'bjhvh2154', 2147483647, 1, '2021-04-06 16:03:31.000000', '2021-04-06 16:03:31.000000'),
+(6, 4, 'savan', 'satroliya', 'savan@gmail.com', 'hhjvnb1646516', 2147483647, 1, '2021-04-04 12:38:37.000000', NULL);
 
 -- --------------------------------------------------------
 
@@ -160,12 +293,13 @@ INSERT INTO `customer` (`customerId`, `addressId`, `groupId`, `firstname`, `last
 --
 
 CREATE TABLE `customer_address` (
-  `entityId` int(11) NOT NULL,
-  `addressId` int(4) DEFAULT NULL,
-  `address` varchar(30) DEFAULT NULL,
-  `city` text DEFAULT NULL,
-  `state` text DEFAULT NULL,
-  `zip` int(10) DEFAULT NULL,
+  `addressId` int(11) NOT NULL,
+  `customerId` int(11) DEFAULT NULL,
+  `address` varchar(64) NOT NULL,
+  `city` varchar(16) NOT NULL,
+  `state` varchar(16) NOT NULL,
+  `country` varchar(16) NOT NULL,
+  `zip` int(6) NOT NULL,
   `type` enum('billing','shipping') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -173,10 +307,19 @@ CREATE TABLE `customer_address` (
 -- Dumping data for table `customer_address`
 --
 
-INSERT INTO `customer_address` (`entityId`, `addressId`, `address`, `city`, `state`, `zip`, `type`) VALUES
-(5, 1, 'block1', 'a', 'a', 1, 'billing'),
-(6, 1, 'block2', 'a', 'a', 1, 'shipping'),
-(7, 2, 'block3', 'a', 'a', 1, 'shipping');
+INSERT INTO `customer_address` (`addressId`, `customerId`, `address`, `city`, `state`, `country`, `zip`, `type`) VALUES
+(1, 1, 'Moti lakhavad,Rajkot,Vinchhiya', 'Vinchhiya', 'Gujrat', 'India', 123, 'billing'),
+(3, 1, 'Moti lakhavad,Rajkot,Vinchhiya', 'Vinchhiya', 'Gujrat', 'India', 123, 'shipping'),
+(7, 3, 'gokul nagar,ram mandir ,street 9, mujka,rajkot', 'rajkot', 'gujrat', 'India', 360001, 'billing'),
+(8, 3, 'xyz,street 9,mujka,rajkot', 'rajkot', 'gujrat', 'India', 360001, 'shipping'),
+(9, 2, 'abc,street 8,mujka,rajkot', 'rajkot', 'gujrat', 'India', 360001, 'billing'),
+(10, 2, 'abc,street 8,mujka,rajkot', 'rajkot', 'gujrat', 'India', 360001, 'shipping'),
+(11, 4, 'abc,street 3,mujka,rajkot', 'rajkot', 'gujrat', 'India', 360001, 'billing'),
+(12, 4, 'abc,street 3,mujka,rajkot', 'rajkot', 'gujrat', 'India', 360001, 'shipping'),
+(13, 5, 'gokul nagar,ram mandir ,street 2, mujka,rajkot', 'rajkot', 'gujrat', 'India', 360001, 'billing'),
+(14, 5, 'gokul nagar,ram mandir ,street 2, mujka,rajkot', 'rajkot', 'gujrat', 'India', 360001, 'shipping'),
+(15, 6, 'xyzavcx,street 56,mujka,rajkot', 'rajkot', 'gujrat', 'India', 360001, 'billing'),
+(16, 6, 'xyzavcx,street 56,mujka,rajkot', 'rajkot', 'gujrat', 'India', 360001, 'shipping');
 
 -- --------------------------------------------------------
 
@@ -185,23 +328,97 @@ INSERT INTO `customer_address` (`entityId`, `addressId`, `address`, `city`, `sta
 --
 
 CREATE TABLE `customer_group` (
-  `entityId` int(11) NOT NULL,
-  `groupId` int(11) DEFAULT NULL,
-  `name` varchar(20) NOT NULL,
-  `status` tinyint(2) DEFAULT NULL,
-  `createddate` date NOT NULL
+  `groupId` int(11) NOT NULL,
+  `name` varchar(16) NOT NULL,
+  `status` tinyint(1) NOT NULL,
+  `createddate` datetime(6) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `customer_group`
 --
 
-INSERT INTO `customer_group` (`entityId`, `groupId`, `name`, `status`, `createddate`) VALUES
-(1, 3, 'g1', 1, '2021-03-09'),
-(2, 2, 'g2', 1, '2021-03-09'),
-(3, 1, 'g3', 1, '2021-03-09'),
-(4, 4, 'g4', 1, '2021-03-09'),
-(5, 5, 'g5', 0, '2021-03-09');
+INSERT INTO `customer_group` (`groupId`, `name`, `status`, `createddate`) VALUES
+(1, 'Retail', 1, '2021-04-06 08:52:05.000000'),
+(2, 'wholesale', 1, '2021-04-06 08:53:49.000000'),
+(3, 'platinum', 1, '2021-04-06 08:54:04.000000'),
+(4, 'gold', 1, '2021-04-06 08:54:26.000000'),
+(5, 'silver', 1, '2021-04-06 08:54:35.000000');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `orderaddress`
+--
+
+CREATE TABLE `orderaddress` (
+  `orderAddressId` int(11) NOT NULL,
+  `addressId` int(11) NOT NULL,
+  `customerId` int(11) NOT NULL,
+  `address` varchar(64) NOT NULL,
+  `city` varchar(16) NOT NULL,
+  `state` varchar(16) NOT NULL,
+  `country` varchar(16) NOT NULL,
+  `zip` int(6) NOT NULL,
+  `type` varchar(8) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `orderaddress`
+--
+
+INSERT INTO `orderaddress` (`orderAddressId`, `addressId`, `customerId`, `address`, `city`, `state`, `country`, `zip`, `type`) VALUES
+(1, 1, 1, 'Moti lakhavad,Rajkot,Vinchhiya', 'Vinchhiya', 'Gujrat', 'India', 123, 'shipping'),
+(2, 1, 1, 'Moti lakhavad,Rajkot,Vinchhiya', 'Vinchhiya', 'Gujrat', 'India', 123, 'billing');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `orderitem`
+--
+
+CREATE TABLE `orderitem` (
+  `itemId` int(11) NOT NULL,
+  `productId` int(11) NOT NULL,
+  `quantity` int(16) NOT NULL,
+  `price` decimal(32,2) NOT NULL,
+  `discount` decimal(32,2) NOT NULL,
+  `createddate` datetime(6) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `orderitem`
+--
+
+INSERT INTO `orderitem` (`itemId`, `productId`, `quantity`, `price`, `discount`, `createddate`) VALUES
+(1, 2, 1, '5849.00', '1.00', '2021-04-06 00:00:00.000000'),
+(2, 1, 1, '9459.00', '1.00', '2021-04-06 00:00:00.000000'),
+(3, 4, 1, '4899.00', '3.00', '2021-04-06 00:00:00.000000'),
+(4, 6, 1, '48989.00', '1.00', '2021-04-06 00:00:00.000000');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ordertable`
+--
+
+CREATE TABLE `ordertable` (
+  `orderId` int(11) NOT NULL,
+  `customerId` int(11) NOT NULL,
+  `paymentmethodId` int(11) NOT NULL,
+  `shippingmethodId` int(11) NOT NULL,
+  `shippingAmount` int(11) NOT NULL,
+  `total` decimal(32,2) NOT NULL,
+  `discount` decimal(32,2) NOT NULL,
+  `createddate` datetime(6) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `ordertable`
+--
+
+INSERT INTO `ordertable` (`orderId`, `customerId`, `paymentmethodId`, `shippingmethodId`, `shippingAmount`, `total`, `discount`, `createddate`) VALUES
+(1, 1, 4, 3, 60, '19906.95', '300.05', '2021-04-06 00:00:00.000000');
 
 -- --------------------------------------------------------
 
@@ -210,23 +427,24 @@ INSERT INTO `customer_group` (`entityId`, `groupId`, `name`, `status`, `createdd
 --
 
 CREATE TABLE `payment` (
-  `id` int(4) NOT NULL,
-  `name` varchar(20) NOT NULL,
-  `code` varchar(100) NOT NULL,
-  `description` varchar(100) NOT NULL,
-  `status` text NOT NULL,
-  `createddate` date NOT NULL
+  `paymentId` int(11) NOT NULL,
+  `name` varchar(16) NOT NULL,
+  `code` varchar(32) NOT NULL,
+  `description` varchar(200) NOT NULL,
+  `status` tinyint(1) NOT NULL,
+  `createddate` datetime(6) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `payment`
 --
 
-INSERT INTO `payment` (`id`, `name`, `code`, `description`, `status`, `createddate`) VALUES
-(1, 'ravi', '1230', 'good dile', '0', '0000-00-00'),
-(2, 'ravi', '1230', 'good dile', '1', '0000-00-00'),
-(5, 'xyyz', '123', 'abc', 'Enable', '2021-02-26'),
-(6, 'qwe', '123', '1', '1', '2021-03-01');
+INSERT INTO `payment` (`paymentId`, `name`, `code`, `description`, `status`, `createddate`) VALUES
+(1, 'creadit card', '1256', 'card', 1, '2021-04-04 12:45:59.000000'),
+(2, 'debit card', '1545', 'card', 1, '2021-04-04 12:46:03.000000'),
+(3, 'bank', '995664', 'bank', 1, '2021-04-04 12:46:07.000000'),
+(4, 'paytm', '456', 'paytm', 1, '2021-04-04 12:46:11.000000'),
+(5, 'paypal', '5454', 'pay', 1, '2021-04-06 09:17:14.000000');
 
 -- --------------------------------------------------------
 
@@ -235,54 +453,46 @@ INSERT INTO `payment` (`id`, `name`, `code`, `description`, `status`, `createdda
 --
 
 CREATE TABLE `product` (
-  `id` int(4) NOT NULL,
-  `sku` int(6) DEFAULT NULL,
-  `image` longtext NOT NULL DEFAULT 'NOT NULL',
-  `name` varchar(20) NOT NULL,
-  `price` bigint(10) NOT NULL,
-  `discount` bigint(10) NOT NULL,
+  `productId` int(11) NOT NULL,
+  `sku` varchar(16) NOT NULL,
+  `name` varchar(32) NOT NULL,
+  `price` decimal(10,2) NOT NULL,
+  `discount` decimal(10,2) DEFAULT NULL,
   `quantity` int(10) NOT NULL,
-  `description` varchar(100) NOT NULL,
-  `status` varchar(10) NOT NULL,
-  `createddate` date NOT NULL,
-  `updateddate` date NOT NULL
+  `description` varchar(200) DEFAULT NULL,
+  `status` tinyint(1) NOT NULL,
+  `createddate` datetime(6) NOT NULL,
+  `updateddate` datetime(6) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `product`
 --
 
-INSERT INTO `product` (`id`, `sku`, `image`, `name`, `price`, `discount`, `quantity`, `description`, `status`, `createddate`, `updateddate`) VALUES
-(4, 102, 'NOT NULL', 'watch', 5000, 20, 10, 'best for you', '0', '0000-00-00', '2021-03-13'),
-(5, 103, 'NOT NULL', 'headphone', 300, 1, 20, '', '1', '2021-02-16', '0000-00-00'),
-(6, 104, 'NOT NULL', 'Mobile', 2000, 10, 20, 'best for today', '1', '2021-02-16', '0000-00-00'),
-(13, 111, 'NOT NULL', 'Mobile1', 2000, 10, 20, 'Enable', '1', '2021-02-18', '2021-02-18'),
-(14, 112, 'NOT NULL', 'Mobile1', 2000, 10, 20, 'Enable', '1', '2021-02-18', '0000-00-00'),
-(95, 167, 'NOT NULL', 'lenovo laptop', 10, 0, 2, '0', '0', '2021-03-04', '0000-00-00'),
-(96, 167, 'NOT NULL', 'lenovo laptop', 20000, 0, 2, '10', '0', '2021-03-04', '0000-00-00'),
-(97, 167, 'NOT NULL', 'lenovo laptop', 12, 1, 12, '10', '0', '2021-03-04', '0000-00-00'),
-(98, 167, 'NOT NULL', 'samsung1', 12000, 10, 10, '0100', '0', '2021-03-04', '0000-00-00'),
-(99, 138, 'NOT NULL', 'abc', 12000, 10, 10, '10', '0', '2021-03-04', '0000-00-00'),
-(100, 138, 'NOT NULL', 'abc', 12000, 10, 10, '10', '0', '2021-03-04', '0000-00-00'),
-(101, 198, 'NOT NULL', 'xc', 12, 11, 12, '1', '0', '2021-03-04', '0000-00-00'),
-(102, 1, 'NOT NULL', 'qw', 1, 1, 1, '1', '0', '2021-03-04', '0000-00-00'),
-(103, 167, 'NOT NULL', 'lenovo laptop', 10000, 1, 1, '1', '0', '2021-03-04', '0000-00-00'),
-(104, 1670, 'NOT NULL', 'lenovo laptop', 12, 1, 1, '1', '0', '2021-03-04', '0000-00-00'),
-(105, 1671, 'NOT NULL', 'j', 1, 1, 1, '1', '0', '2021-03-04', '0000-00-00'),
-(106, 2, 'NOT NULL', 'a', 100, 10, 10, '10', '0', '2021-03-04', '0000-00-00'),
-(107, 2, 'NOT NULL', 'a', 100, 10, 10, '10', '0', '2021-03-04', '0000-00-00'),
-(108, 2, 'NOT NULL', 'a', 100, 10, 10, '10', '0', '2021-03-04', '0000-00-00'),
-(109, 2, 'NOT NULL', 'a', 100, 10, 10, '10', '0', '2021-03-04', '0000-00-00'),
-(110, 2, 'NOT NULL', 'a', 100, 10, 10, '10', '0', '2021-03-04', '0000-00-00'),
-(111, 2, 'NOT NULL', 'a', 100, 10, 10, '10', '0', '2021-03-04', '0000-00-00'),
-(112, 167, 'NOT NULL', 'lenovo laptop', 1, 2, 2, '2', '0', '2021-03-04', '0000-00-00'),
-(113, 167, 'NOT NULL', 'lenovo laptop', 1, 2, 2, '2', '0', '2021-03-04', '0000-00-00'),
-(114, 167, 'NOT NULL', '122', 1, 1, 1, '1', '0', '2021-03-04', '0000-00-00'),
-(122, 167, 'NOT NULL', 'lenovo laptop', 121000, 1, 1, '1', '0', '2021-03-10', '0000-00-00'),
-(123, 167, 'NOT NULL', 'lenovo laptop', 121000, 1, 1, '1', '0', '2021-03-10', '0000-00-00'),
-(125, 167, 'NOT NULL', 'lenovo laptop', 13231, 13, 13, '31', '0', '2021-03-10', '0000-00-00'),
-(126, 167, 'NOT NULL', 'lenovo laptop', 12333, 1, 12, '12', '0', '2021-03-11', '0000-00-00'),
-(127, 167, 'NOT NULL', 'lenovo laptop', 122333, 1, 1, '1', '0', '2021-03-13', '0000-00-00');
+INSERT INTO `product` (`productId`, `sku`, `name`, `price`, `discount`, `quantity`, `description`, `status`, `createddate`, `updateddate`) VALUES
+(1, 's1', 'Drawer', '9459.00', '1.00', 40, 'abc', 1, '2021-04-07 05:11:57.000000', '2021-04-07 05:11:57.000000'),
+(2, 's2', 'coffee table', '5849.00', '1.00', 40, 'abc', 1, '2021-04-06 18:09:20.000000', '2021-04-06 18:09:20.000000'),
+(3, 's3', 'computer desk', '10969.00', '2.00', 20, 'a', 1, '2021-04-06 18:10:35.000000', '2021-04-06 18:10:35.000000'),
+(4, 's4', 'hutch desks', '4899.00', '3.00', 30, 'abc', 1, '2021-04-06 07:55:56.000000', '2021-04-06 07:55:56.000000'),
+(5, 's5', '3 seater sofas', '41324.00', '2.00', 30, 'ads', 1, '2021-04-04 07:40:54.000000', NULL),
+(6, 's6', 'sofa bed', '48989.00', '1.00', 40, 'abc', 1, '2021-04-04 07:41:01.000000', NULL),
+(7, 's7', '3 door wardrobe', '11156.00', '1.00', 20, 'abc', 1, '2021-04-04 07:41:06.000000', NULL),
+(8, 's8', '6 seater dining table', '32699.00', '3.00', 20, 'abc', 1, '2021-04-04 07:41:11.000000', NULL),
+(9, 's9', 'writing table', '7499.00', '1.00', 40, 'abc', 1, '2021-04-04 07:41:15.000000', NULL),
+(10, 's10', 'chair', '499.00', '1.00', 50, 'abc', 1, '2021-04-06 04:19:57.000000', '2021-04-06 04:19:57.000000');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `product_attribute`
+--
+
+CREATE TABLE `product_attribute` (
+  `attributeId` int(11) NOT NULL,
+  `productId` int(11) NOT NULL,
+  `attributeOptionId` int(11) NOT NULL,
+  `name` varchar(32) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -294,7 +504,7 @@ CREATE TABLE `product_group_price` (
   `entityId` int(11) NOT NULL,
   `productId` int(11) NOT NULL,
   `CustomerGroupId` int(11) NOT NULL,
-  `price` decimal(10,2) NOT NULL
+  `price` decimal(10,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -302,16 +512,39 @@ CREATE TABLE `product_group_price` (
 --
 
 INSERT INTO `product_group_price` (`entityId`, `productId`, `CustomerGroupId`, `price`) VALUES
-(2, 4, 2, '200.00'),
-(3, 4, 3, '300.00'),
-(4, 4, 4, '400.00'),
-(17, 4, 5, '500.00'),
-(18, 4, 1, '100.00'),
-(19, 5, 3, '200.00'),
-(20, 5, 2, '500.00'),
-(21, 5, 1, '600.00'),
-(22, 5, 4, '0.00'),
-(23, 5, 5, '0.00');
+(1, 1, 1, '10000.00'),
+(2, 1, 2, '9000.00'),
+(3, 1, 3, '8500.00'),
+(4, 2, 1, '6000.00'),
+(5, 2, 2, '5000.00'),
+(6, 2, 3, '4500.00'),
+(7, 2, 4, '6000.00'),
+(8, 2, 5, '5400.00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `product_media`
+--
+
+CREATE TABLE `product_media` (
+  `imageId` int(11) NOT NULL,
+  `productId` int(11) NOT NULL,
+  `image` varchar(255) NOT NULL,
+  `label` varchar(10) NOT NULL,
+  `small` tinyint(1) NOT NULL DEFAULT 0,
+  `thumb` tinyint(1) NOT NULL DEFAULT 0,
+  `base` tinyint(1) NOT NULL DEFAULT 0,
+  `gallary` tinyint(1) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `product_media`
+--
+
+INSERT INTO `product_media` (`imageId`, `productId`, `image`, `label`, `small`, `thumb`, `base`, `gallary`) VALUES
+(1, 1, '1.jpg', '', 1, 0, 0, 1),
+(2, 1, '2.jpg', '', 0, 1, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -320,29 +553,24 @@ INSERT INTO `product_group_price` (`entityId`, `productId`, `CustomerGroupId`, `
 --
 
 CREATE TABLE `shipping` (
-  `id` int(4) NOT NULL,
-  `name` varchar(20) NOT NULL,
-  `code` varchar(100) NOT NULL,
+  `shippingId` int(11) NOT NULL,
+  `name` varchar(32) NOT NULL,
+  `code` varchar(16) NOT NULL,
   `amount` decimal(10,2) NOT NULL,
-  `description` varchar(100) NOT NULL,
-  `status` varchar(6) NOT NULL,
-  `createddate` date NOT NULL
+  `description` varchar(200) NOT NULL,
+  `status` tinyint(1) NOT NULL,
+  `createddate` datetime(6) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `shipping`
 --
 
-INSERT INTO `shipping` (`id`, `name`, `code`, `amount`, `description`, `status`, `createddate`) VALUES
-(1, 'abc', '123', '0.00', '123', '1', '0000-00-00'),
-(2, 'abc', '123', '0.00', '123', '0', '0000-00-00'),
-(5, 'abcd', '12', '0.00', '12', '0', '2021-02-22'),
-(6, 'abc', '12', '0.00', '12', 'Choose', '2021-02-23'),
-(7, 'xyz', '123', '0.00', '12', '1', '2021-02-23'),
-(9, 'abc', '123', '12.00', '123', 'Enable', '2021-02-23'),
-(11, 'xyz', '789', '12.50', 'hi', 'Enable', '2021-02-23'),
-(12, 'abc', '123', '12.00', '123', '1', '2021-02-23'),
-(14, 'qwe', '123', '12.00', '1', '0', '2021-03-01');
+INSERT INTO `shipping` (`shippingId`, `name`, `code`, `amount`, `description`, `status`, `createddate`) VALUES
+(1, 'AIR', '123', '100.00', 'a', 1, '0000-00-00 00:00:00.000000'),
+(2, 'FEDEX', '789', '70.00', 'a', 1, '0000-00-00 00:00:00.000000'),
+(3, 'RAIL', '456', '60.00', 'abc', 1, '0000-00-00 00:00:00.000000'),
+(4, 'DHL', '6464', '30.00', 'abv', 1, '0000-00-00 00:00:00.000000');
 
 --
 -- Indexes for dumped tables
@@ -352,7 +580,7 @@ INSERT INTO `shipping` (`id`, `name`, `code`, `amount`, `description`, `status`,
 -- Indexes for table `admin`
 --
 ALTER TABLE `admin`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`adminId`);
 
 --
 -- Indexes for table `attribute`
@@ -368,55 +596,130 @@ ALTER TABLE `attribute_option`
   ADD KEY `attributeId` (`attributeId`);
 
 --
+-- Indexes for table `cart`
+--
+ALTER TABLE `cart`
+  ADD PRIMARY KEY (`cartId`);
+
+--
+-- Indexes for table `cart_address`
+--
+ALTER TABLE `cart_address`
+  ADD PRIMARY KEY (`cartAddressId`),
+  ADD KEY `addressId` (`addressId`),
+  ADD KEY `cart_address_ibfk_2` (`cartId`);
+
+--
+-- Indexes for table `cart_item`
+--
+ALTER TABLE `cart_item`
+  ADD PRIMARY KEY (`itemId`),
+  ADD KEY `cart_item_ibfk_1` (`cartId`),
+  ADD KEY `cart_item_ibfk_2` (`productId`);
+
+--
 -- Indexes for table `category`
 --
 ALTER TABLE `category`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`categoryId`),
+  ADD KEY `parentId` (`parentId`);
+
+--
+-- Indexes for table `cms_page`
+--
+ALTER TABLE `cms_page`
+  ADD PRIMARY KEY (`pageId`),
+  ADD UNIQUE KEY `key` (`identifier`);
+
+--
+-- Indexes for table `config`
+--
+ALTER TABLE `config`
+  ADD PRIMARY KEY (`configId`),
+  ADD KEY `groupId` (`groupId`);
+
+--
+-- Indexes for table `config_group`
+--
+ALTER TABLE `config_group`
+  ADD PRIMARY KEY (`entityId`),
+  ADD KEY `groupId` (`groupId`);
 
 --
 -- Indexes for table `customer`
 --
 ALTER TABLE `customer`
   ADD PRIMARY KEY (`customerId`),
-  ADD KEY `address_id` (`addressId`),
   ADD KEY `groupId` (`groupId`);
 
 --
 -- Indexes for table `customer_address`
 --
 ALTER TABLE `customer_address`
-  ADD PRIMARY KEY (`entityId`),
-  ADD KEY `addressId` (`addressId`);
+  ADD PRIMARY KEY (`addressId`),
+  ADD KEY `customer_address_ibfk_1` (`customerId`);
 
 --
 -- Indexes for table `customer_group`
 --
 ALTER TABLE `customer_group`
-  ADD PRIMARY KEY (`entityId`);
+  ADD PRIMARY KEY (`groupId`);
+
+--
+-- Indexes for table `orderaddress`
+--
+ALTER TABLE `orderaddress`
+  ADD PRIMARY KEY (`orderAddressId`);
+
+--
+-- Indexes for table `orderitem`
+--
+ALTER TABLE `orderitem`
+  ADD PRIMARY KEY (`itemId`);
+
+--
+-- Indexes for table `ordertable`
+--
+ALTER TABLE `ordertable`
+  ADD PRIMARY KEY (`orderId`);
 
 --
 -- Indexes for table `payment`
 --
 ALTER TABLE `payment`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`paymentId`);
 
 --
 -- Indexes for table `product`
 --
 ALTER TABLE `product`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`productId`);
+
+--
+-- Indexes for table `product_attribute`
+--
+ALTER TABLE `product_attribute`
+  ADD KEY `productId` (`productId`);
 
 --
 -- Indexes for table `product_group_price`
 --
 ALTER TABLE `product_group_price`
-  ADD PRIMARY KEY (`entityId`);
+  ADD PRIMARY KEY (`entityId`),
+  ADD KEY `productId` (`productId`);
+
+--
+-- Indexes for table `product_media`
+--
+ALTER TABLE `product_media`
+  ADD PRIMARY KEY (`imageId`),
+  ADD KEY `productId` (`productId`);
 
 --
 -- Indexes for table `shipping`
 --
 ALTER TABLE `shipping`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`shippingId`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -426,67 +729,127 @@ ALTER TABLE `shipping`
 -- AUTO_INCREMENT for table `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `adminId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `attribute`
 --
 ALTER TABLE `attribute`
-  MODIFY `attributeId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `attributeId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `attribute_option`
 --
 ALTER TABLE `attribute_option`
-  MODIFY `optionId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `optionId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT for table `cart`
+--
+ALTER TABLE `cart`
+  MODIFY `cartId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `cart_address`
+--
+ALTER TABLE `cart_address`
+  MODIFY `cartAddressId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `cart_item`
+--
+ALTER TABLE `cart_item`
+  MODIFY `itemId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `category`
 --
 ALTER TABLE `category`
-  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `categoryId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT for table `cms_page`
+--
+ALTER TABLE `cms_page`
+  MODIFY `pageId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `config`
+--
+ALTER TABLE `config`
+  MODIFY `configId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `config_group`
+--
+ALTER TABLE `config_group`
+  MODIFY `entityId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `customerId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `customerId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `customer_address`
 --
 ALTER TABLE `customer_address`
-  MODIFY `entityId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `addressId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `customer_group`
 --
 ALTER TABLE `customer_group`
-  MODIFY `entityId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `groupId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `orderaddress`
+--
+ALTER TABLE `orderaddress`
+  MODIFY `orderAddressId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `orderitem`
+--
+ALTER TABLE `orderitem`
+  MODIFY `itemId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `ordertable`
+--
+ALTER TABLE `ordertable`
+  MODIFY `orderId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `payment`
 --
 ALTER TABLE `payment`
-  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `paymentId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=128;
+  MODIFY `productId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `product_group_price`
 --
 ALTER TABLE `product_group_price`
-  MODIFY `entityId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `entityId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT for table `product_media`
+--
+ALTER TABLE `product_media`
+  MODIFY `imageId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `shipping`
 --
 ALTER TABLE `shipping`
-  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `shippingId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Constraints for dumped tables
@@ -499,16 +862,48 @@ ALTER TABLE `attribute_option`
   ADD CONSTRAINT `attribute_option_ibfk_1` FOREIGN KEY (`attributeId`) REFERENCES `attribute` (`attributeId`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Constraints for table `cart_address`
+--
+ALTER TABLE `cart_address`
+  ADD CONSTRAINT `cart_address_ibfk_2` FOREIGN KEY (`cartId`) REFERENCES `cart` (`cartId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `cart_address_ibfk_3` FOREIGN KEY (`addressId`) REFERENCES `customer_address` (`addressId`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Constraints for table `cart_item`
+--
+ALTER TABLE `cart_item`
+  ADD CONSTRAINT `cart_item_ibfk_1` FOREIGN KEY (`cartId`) REFERENCES `cart` (`cartId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `cart_item_ibfk_2` FOREIGN KEY (`productId`) REFERENCES `product` (`productId`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `config_group`
+--
+ALTER TABLE `config_group`
+  ADD CONSTRAINT `config_group_ibfk_1` FOREIGN KEY (`groupId`) REFERENCES `config` (`groupId`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Constraints for table `customer_address`
 --
 ALTER TABLE `customer_address`
-  ADD CONSTRAINT `customer_address_ibfk_1` FOREIGN KEY (`addressId`) REFERENCES `customer` (`addressId`) ON DELETE SET NULL ON UPDATE CASCADE;
+  ADD CONSTRAINT `customer_address_ibfk_1` FOREIGN KEY (`customerId`) REFERENCES `customer` (`customerId`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `customer_group`
+-- Constraints for table `product_attribute`
 --
-ALTER TABLE `customer_group`
-  ADD CONSTRAINT `customer_group_ibfk_1` FOREIGN KEY (`groupId`) REFERENCES `customer` (`groupId`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `product_attribute`
+  ADD CONSTRAINT `product_attribute_ibfk_1` FOREIGN KEY (`productId`) REFERENCES `product` (`productId`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `product_group_price`
+--
+ALTER TABLE `product_group_price`
+  ADD CONSTRAINT `product_group_price_ibfk_1` FOREIGN KEY (`productId`) REFERENCES `product` (`productId`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `product_media`
+--
+ALTER TABLE `product_media`
+  ADD CONSTRAINT `product_media_ibfk_1` FOREIGN KEY (`productId`) REFERENCES `product` (`productId`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
