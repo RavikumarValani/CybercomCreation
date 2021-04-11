@@ -10,7 +10,7 @@ namespace Controller\Admin;
             try 
             {
 
-                $gridHtml = \Mage::getBlock('Block\Shipping\Grid')->toHtml();
+                $gridHtml = \Mage::getBlock('Admin\Shipping\Grid')->toHtml();
                 $response = [
                     'element' => [
                         'selector' => '#contentHtml',
@@ -42,7 +42,6 @@ namespace Controller\Admin;
             } catch (\Exception $e) {
                 $this->getMessage()->setFailure($e->getMessage());
             }
-            $this->redirect('grid');
         }
         
         public function saveAction()
@@ -61,36 +60,30 @@ namespace Controller\Admin;
             } catch (\Exception $e) {
                 $this->getMessage()->setFailure($e->getMessage());
             }
-            $this->redirect('grid');
+            $this->gridAction();
         }
         public function deleteAction()
         {
             try 
             {
-                $id = $this->getRequest()->getGet('shippingId');
+                $shippingId = $this->getRequest()->getGet('shippingId');
                 $shipping = \Mage::getModel('Shipping');
-                if($shipping->delete($id))
+
+                if(!$shippingId)
                 {
-                    $this->getMessage()->setSuccess('Record Delete Successful.');
+                    $this->getMessage()->setSuccess('Id not found.');
                 }
-                else
+                $shipping->load($shippingId);
+                if(!$shipping)
                 {
-                    $this->getMessage()->setFailure('Unable To Delete Record.');
+                    $this->getMessage()->setFailure('Data not found.');
                 }
-                // $gridHtml = \Mage::getBlock('Shipping\Grid')->toHtml();
-                // $response = [
-                //     'status' => 'success',
-                //     'message' => 'hello',
-                //     'element' => [
-                //         'selector' => '#contentHtml',
-                //         'html' => $gridHtml
-                //     ]
-                // ];
-                // header("Content-Type: application/json");
-                // echo json_encode($response);
+                $shipping->delete($shippingId);
+                
             } catch (\Exception $e) {
                $this->getMessage()->setFailure($e->getMessage());
             }
+            $this->gridAction();
             
         }
 
@@ -118,17 +111,22 @@ namespace Controller\Admin;
            } catch (\Exception $e) {
                 $this->getMessage()->setFailure($e->getMessage());
            }
-           $this->redirect('grid', null, null, true);
+           $this->gridAction();
         }
 
         public function filterAction()
         {
-            $filters = $this->getRequest()->getPost('filter');
-
-            $filter = \Mage::getModel('Core\Filter');
-            $filter->setFilters($filters);
+            try 
+            {
+                $filters = $this->getRequest()->getPost('filter');
             
-            $this->redirect('grid', null, null, true);
+                $filter = \Mage::getModel('Core\Filter');
+                $filter->setFilters($filters);
+
+            } catch (\Exception $e) {
+                $this->getMessage()->setFailure($e->getMessage());
+            }
+            $this->gridAction();
 
         }
     }

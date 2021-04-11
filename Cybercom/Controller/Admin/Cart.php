@@ -22,14 +22,24 @@ namespace Controller\Admin;
                 $cart = $this->getCart();
                 $cart->addItemToCart($product, 1, true);
                 
-                $this->getMessage()->setSuccess('Item successfully added into cart');            
+                $grid = \Mage::getBlock('Admin\Cart\Grid');
+                $grid->setCart($cart);
+                
+                $gridHtml = $grid->toHtml();
+                $response = [
+                    'element' => [
+                        'selector' => '#contentHtml',
+                        'html' => $gridHtml
+                    ]
+                ];
+                header("Content-Type: application/json");
+                echo json_encode($response);
 
 
             } catch (\Exception $e) {
                 $this->getMessage()->setFailure($e->getMessage());            
             }
 
-            $this->redirect('index');
         }
 
         protected function getCart($customerId = null)
@@ -61,7 +71,10 @@ namespace Controller\Admin;
         {
             try
             {
-                $gridHtml = \Mage::getBlock('Admin\Cart\Grid')->toHtml();
+                $grid = \Mage::getBlock('Admin\Cart\Grid');
+                $cart = $this->getCart();
+                $grid->setCart($cart);
+                $gridHtml = $grid->toHtml();
                 $response = [
                     'element' => [
                         'selector' => '#contentHtml',
@@ -71,8 +84,6 @@ namespace Controller\Admin;
                 header("Content-Type: application/json");
                 echo json_encode($response);
 
-                $cart = $this->getCart();
-                $gridHtml->setCart($cart);
 
             } catch (\Exception $e) {
                 $this->getMessage()->setFailure($e->getMessage());
@@ -103,8 +114,7 @@ namespace Controller\Admin;
             } catch (\Exception $e) {
                 $this->getMessage()->setFailure($e->getMessage());            
             }
-
-            $this->redirect('index');
+            $this->indexAction();
 
         }
 
@@ -130,7 +140,7 @@ namespace Controller\Admin;
             } catch (\Exception $e) {
                 $this->getMessage()->setFailure($e->getMessage());
             }
-            $this->redirect('index',null,null,true);
+            $this->indexAction();
         }
 
         public function selectCustomerAction()
@@ -141,7 +151,6 @@ namespace Controller\Admin;
             $session->customerId = $customerId;
             $cart = $this->getCart($customerId);
             
-            $this->redirect('index',null,null,true);
         }
     }
 ?>

@@ -1,9 +1,9 @@
 <?php
 namespace Block\Admin\Category;
 
-    \Mage::loadFileByClassName("Block\Core\Template");
+    \Mage::loadFileByClassName("Block\Core\Grid");
     
-    class Grid extends \Block\Core\Template  
+    class Grid extends \Block\Core\Grid  
     {
         protected $category = [];
         protected $categoriesOptions = [];
@@ -12,7 +12,9 @@ namespace Block\Admin\Category;
         {
             parent::__construct();
             $this->setTemplate('./view/admin/category/grid.php');
-        }
+        }   
+
+
         public function setCategories($category = null)
         {
             if(!$category){

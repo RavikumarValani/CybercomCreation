@@ -9,12 +9,16 @@
         <h1  style="margin-bottom: 40px;"><?php echo $this->getTitle() ?></h1>
 </div>
 
-<form method="POST" action="<?php echo $this->getFilterUrl() ?>" id="grid" enctype="multipart/form-data">
+<form method="POST" action="<?php echo $this->getUrl()->getUrl('filter'); ?>" id="grid" enctype="multipart/form-data">
 <table class="table table-success table-striped ">
    <?php if($buttons): ?>
         <?php foreach ($buttons as $key => $button) : ?>
             <?php if($button['ajax'] ): ?>
+                <?php if($button['label'] == 'Apply Filter'): ?>
+                <button type="button" class="btn btn-success" style="margin-right: 10px;" onclick="mage.setForm('#grid').load()"><?=$button['label'] ?></button>
+                <?php else: ?>
                 <a class="btn btn-success" style="margin-right: 10px;" onclick="<?=$this->getButtonUrl($button['method']) ?>"><?=$button['label'] ?></a>
+                <?php endif; ?>
             <?php else: ?> 
                 <a class="btn btn-success" style="margin-right: 10px;"
                     href="<?=$this->getButtonUrl($button['method']) ?>"><?=$button['label'] ?></a>
@@ -53,7 +57,7 @@
                     <td>
                         <?php foreach ($actions as $key => $action) : ?>
                             <?php if($action['ajax'] ): ?>
-
+                                <a class="btn btn-<?=$action['class'] ?>" href="javascript:void(0)" onclick="<?=$this->getMethodUrl($row, $action['method']) ?>"><?=$action['label'] ?></a>
                             <?php else: ?>
                                 <a class="btn btn-<?=$action['class'] ?>"
                                     href="<?=$this->getMethodUrl($row, $action['method']) ?>"><?=$action['label'] ?></a>

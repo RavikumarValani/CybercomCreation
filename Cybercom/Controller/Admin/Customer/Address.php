@@ -9,19 +9,7 @@ namespace Controller\Admin\Customer;
         {
             try 
             {
-                $EditBlock = \Mage::getBlock('Admin\Customer\Edit\Tabs\Address');
-                $leftBar = \Mage::getBlock('Admin\Customer\Edit\Tabs'); 
-
-                $layout = $this->getLayout();
-
-                $content = \Mage::getBlock('Core\Layout\Content');
-                $content = $layout->getContent();
-                $content->addChild($EditBlock);
-
-                $leftContent = \Mage::getBlock('Core\Layout\Left');
-                $leftContent = $layout->getLeft();
-                $leftContent->addChild($leftBar);
-
+                $edit = \Mage::getBlock('Admin\Customer\Edit\Tabs\Address');
                 $customer = \Mage::getModel('Customer'); 
                 if($customerId = (int) $this->getRequest()->getGet('customerId'))
                 {
@@ -31,13 +19,29 @@ namespace Controller\Admin\Customer;
                         $this->getMessage()->setFailure('Unable To Process Data.');  
                     }
                 }
+                
+                $edit->setTableRow($customer);
 
-                $EditBlock->setTableRow($customer);
-                $this->tolayoutHtml();
+                $editHtml = $edit->toHtml();
+                $leftBar = \Mage::getBlock('Admin\Customer\Edit\Tabs')->toHtml(); 
+
+                $response = [
+                    'element' => [
+                        [
+                            'selector' => '#contentHtml',
+                            'html' => $editHtml
+                        ],
+                        [
+                            'selector' => '#tabContent',
+                            'html' => $leftBar
+                        ]
+                    ]
+                ];
+                header("Content-Type: application/json");
+                echo json_encode($response);
             } catch (\Exception $e) {
                 $this->getMessage()->setFailure($e->getMessage());
             }
-            $this->redirect('grid');
         }
 
         public function saveAction()
@@ -97,7 +101,6 @@ namespace Controller\Admin\Customer;
             } catch (\Exception $e) {
                 $this->getMessage()->setFailure($e->getMessage());
             }
-            $this->redirect('form','Customer',['customerId' => $customerId],true);
         }
     }
     

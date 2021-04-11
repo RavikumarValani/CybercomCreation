@@ -15,7 +15,7 @@
    <?php if($buttons): ?>
         <?php foreach ($buttons as $key => $button) : ?>
             <?php if($button['ajax'] ): ?>
-
+                <a class="btn btn-success" style="margin-right: 10px;" href="javascript:void(0)" onclick="<?=$this->getButtonUrl($button['method']) ?>"><?=$button['label'] ?></a>
             <?php else: ?> 
                 <a class="btn btn-success" style="margin-right: 10px;"
                     href="<?=$this->getButtonUrl($button['method']) ?>"><?=$button['label'] ?></a>
@@ -54,10 +54,9 @@
                     <td>
                         <?php foreach ($actions as $key => $action) : ?>
                             <?php if($action['ajax'] ): ?>
-
+                                <a class="btn btn-<?=$action['class'] ?>" href="javascript:void(0)" onclick="<?=$this->getMethodUrl($row, $action['method']) ?>"><?=$action['label'] ?></a>
                             <?php else: ?>
-                                <a class="btn btn-<?=$action['class'] ?>"
-                                    href="<?=$this->getMethodUrl($row, $action['method']) ?>"><?=$action['label'] ?></a>
+                                <a class="btn btn-<?=$action['class'] ?>" href="<?=$this->getMethodUrl($row, $action['method']) ?>"><?=$action['label'] ?></a>
                             <?php endif ?>
                         <?php endforeach; ?>
                     </td>
@@ -68,4 +67,3 @@
     
 
 </table>
-</form>

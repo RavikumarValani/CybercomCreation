@@ -3,7 +3,7 @@
 <?php $color = ['danger', 'primary'];  ?>
 
 <table class="table table-success table-striped  top-100 start-50 ">
-    <a class="btn btn-success mb-4 p-2" href="<?php echo $this->getUrl()->getUrl('form') ?>" >Add Category</a>
+    <a class="btn btn-success mb-4 p-2" onclick="mage.setUrl('<?php echo $this->getUrl()->getUrl('form') ?>').load()" >Add Category</a>
     <tr>
         <th scope="col">Category Id</th>
         <th scope="col">Category Name</th>
@@ -23,10 +23,10 @@
         <td><?php echo $this->getName($value); ?></td>
         <td><?php echo $value->parentId; ?></td>
         <td><?php echo $value->pathId; ?></td>
-        <td><a class="btn btn-<?php echo $color[$value->status] ?>" href="<?php echo $this->getUrl()->getUrl('status', null,['categoryId' => $value->categoryId]); ?>"> <?php echo $value->getStatusOption()[$value->status] ?> </a></td>
+        <td><a class="btn btn-<?php echo $color[$value->status] ?>" onclick="mage.setUrl('<?php echo $this->getUrl()->getUrl('status', null,['categoryId' => $value->categoryId]); ?>').load()"> <?php echo $value->getStatusOption()[$value->status] ?> </a></td>
         <td>
-            <a class="btn btn-primary" href="<?php echo $this->getUrl()->getUrl('form',null,['categoryId'=>$value->categoryId]); ?>">Edit</a>
-            <a class="btn btn-primary" href="<?php echo $this->getUrl()->getUrl('delete',null,['categoryId'=>$value->categoryId]); ?>">Delete</a>
+            <a class="btn btn-primary" onclick="mage.setUrl('<?php echo $this->getUrl()->getUrl('form',null,['categoryId'=>$value->categoryId]); ?>').resetParams().load()">Edit</a>
+            <a class="btn btn-danger" onclick="mage.setUrl('<?php echo $this->getUrl()->getUrl('delete',null,['categoryId'=>$value->categoryId]); ?>').resetParams().load()">Delete</a>
         </td>
     </tr>
     <?php endforeach; ?>

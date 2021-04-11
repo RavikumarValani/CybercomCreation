@@ -48,8 +48,8 @@ namespace Model;
             return [
                 self::INPUTTYPE_TEXTBOX => 'Text Box',
                 self::INPUTTYPE_TEXTAREA => 'Text Area',
-                self::INPUTTYPE_SELECT => 'Select',
-                self::INPUTTYPE_RADIO => 'Radio'
+                self::INPUTTYPE_SELECT => 'select',
+                self::INPUTTYPE_RADIO => 'radio'
             ];
         }
 

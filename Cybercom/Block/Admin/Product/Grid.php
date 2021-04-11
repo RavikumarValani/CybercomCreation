@@ -75,25 +75,25 @@ namespace Block\Admin\Product;
             $this->addActions('edit', [
                 'label' => 'Edit',
                 'method' => 'getEditUrl',
-                'ajax' => false,
+                'ajax' => true,
                 'class' => 'primary'
             ]);
             $this->addActions('delete', [
                 'label' => 'Delete',
                 'method' => 'getDeleteUrl',
-                'ajax' => false,
+                'ajax' => true,
                 'class' => 'danger'
             ]);
             $this->addActions('groupPrice', [
                 'label' => 'Group Price',
                 'method' => 'getGroupPriceUrl',
-                'ajax' => false,
+                'ajax' => true,
                 'class' => 'primary'
             ]);
             $this->addActions('addCart', [
                 'label' => 'AddToCart',
                 'method' => 'getAddCartUrl',
-                'ajax' => false,
+                'ajax' => true,
                 'class' => 'primary'
             ]);
             return $this;
@@ -101,17 +101,20 @@ namespace Block\Admin\Product;
 
         public function getEditurl($row)
         {
-            return $this->getUrl()->getUrl('form', null, ['productId' => $row->productId]);
+            $url = $this->getUrl()->getUrl('form', null, ['productId' => $row->productId]);
+            return "mage.setUrl('{$url}').resetParams().load()";
         }
 
         public function getDeleteUrl($row)
         {
-            return $this->getUrl()->getUrl('delete', null, ['productId' => $row->productId]);
+            $url = $this->getUrl()->getUrl('delete', null, ['productId' => $row->productId]);
+            return "mage.setUrl('{$url}').resetParams().load()";
         }
 
         public function getGroupPriceUrl($row)
         {
-            return $this->getUrl()->getUrl('index', 'Product\Group\Price', ['productId' => $row->productId]);
+            $url = $this->getUrl()->getUrl('index', 'Product\Group\Price', ['productId' => $row->productId]);
+            return "mage.setUrl('{$url}').resetParams().load()";
         }
 
         public function getTitle()
@@ -124,29 +127,32 @@ namespace Block\Admin\Product;
             $this->addButton('AddProduct', [
                 'label' => 'Add Product',
                 'method' => 'getAddUrl',
-                'ajax' => false
+                'ajax' => true
             ]);
             $this->addButton('Filter', [
                 'label' => 'Apply Filter',
                 'method' => 'getFilterUrl',
-                'ajax' => false
+                'ajax' => true
             ]);
             return $this;
         }
 
         public function getAddUrl()
         {
-            return $this->getUrl()->getUrl('form');
+            $url = $this->getUrl()->getUrl('form');
+            return "mage.setUrl('{$url}').load()";
         }
 
         public function getFilterUrl()
         {
-            return $this->getUrl()->getUrl('filter');
+            $url = $this->getUrl()->getUrl('filter');
+            return "mage.setUrl('{$url}').load()";
         }
 
         public function getAddCartUrl($row)
         {
-            return $this->getUrl()->getUrl('addToCart', 'Cart', ['productId' => $row->productId]);
+            $url = $this->getUrl()->getUrl('addToCart', 'Cart', ['productId' => $row->productId]);
+            return "mage.setUrl('{$url}').resetParams().load()";
         }
     }
 

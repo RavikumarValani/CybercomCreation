@@ -29,6 +29,17 @@ namespace Controller\Admin;
             try
             {
                 $edit = \Mage::getBlock('Admin\Category\Edit');
+                $category = \Mage::getModel('Category');
+                if($categoryId = (int) $this->getRequest()->getGet('categoryId'))
+                {
+                    $category->load($categoryId);
+                    if(!$category)
+                    {
+                        $this->getMessage()->setFailure('Unable to Find Data.');   
+                    }
+                }
+                $edit->setTableRow($category);
+                
                 $editHtml = $edit->toHtml();
                 $leftBar = \Mage::getBlock('Admin\Category\Edit\Tabs')->toHtml(); 
 
@@ -47,22 +58,10 @@ namespace Controller\Admin;
                 header("Content-Type: application/json");
                 echo json_encode($response);
 
-                $category = \Mage::getModel('Category');
-                if($categoryId = (int) $this->getRequest()->getGet('categoryId'))
-                {
-                    $category->load($categoryId);
-                    if(!$category)
-                    {
-                        $this->getMessage()->setFailure('Unable to Find Data.');   
-                    }
-                }
-                $editHtml->setTableRow($category);
 
-                $this->tolayoutHtml();
             } catch (\Exception $e) {
                 $this->getMessage()->setFailure($e->getMessage());
             }
-            $this->redirect('grid',null,null,true);
         }
         public function saveAction()
         {
@@ -98,7 +97,7 @@ namespace Controller\Admin;
             }catch (\Exception $e) {
                 $this->getMessage()->setFailure($e->getMessage());
             }
-            $this->redirect('grid',null,null,true);
+            $this->gridAction();
         }
         public function deleteAction()
         {
@@ -121,19 +120,12 @@ namespace Controller\Admin;
                 $pathId = $category->pathId;
                 $parentId = $category->parentId;
                 $category->updateChildrenPathIds($pathId, $parentId);
-
-                if($category->delete($categoryId))
-                {
-                    $this->getMessage()->setSuccess('Record Delete Successful.');
-                }
-                else
-                {
-                    $this->getMessage()->setFailure('Unable To Delete Record.');
-                }
+                $category->delete($categoryId);
+               
             } catch (\Exception $e) {
                 $this->getMessage()->setFailure($e->getMessage());
             }
-            $this->redirect('grid',null,null,true);
+            $this->gridAction();
 
         }
 
@@ -161,18 +153,23 @@ namespace Controller\Admin;
            } catch (\Exception $e) {
                 $this->getMessage()->setFailure($e->getMessage());
            }
-           $this->redirect('grid', null, null, true);
+           $this->gridAction();
+
         }
 
         public function filterAction()
         {
-            $filters = $this->getRequest()->getPost('filter');
-
-            $filter = \Mage::getModel('Core\Filter');
-            $filter->setFilters($filters);
+            try 
+            {
+                $filters = $this->getRequest()->getPost('filter');
             
-            $this->redirect('grid', null, null, true);
+                $filter = \Mage::getModel('Core\Filter');
+                $filter->setFilters($filters);
 
+            } catch (\Exception $e) {
+                $this->getMessage()->setFailure($e->getMessage());
+            }
+            $this->gridAction();
         }
     }
 ?>

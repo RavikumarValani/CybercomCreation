@@ -8,8 +8,8 @@ namespace Block\Admin\Customer\Edit;
         public function prepareTab()
         {
             parent::prepareTab();
-            $this->addTab('customer',['label' => 'Customer Information','default' => true, 'block' => 'Block\Admin\Customer\Edit\Tabs\Form']);
-            $this->addTab('Address',['label' => 'Addresses','default' => true, 'block' => 'Block\Admin\Customer\Edit\Tabs\Address']);
+            $this->addTab('customer',['label' => 'Customer Information', 'block' => 'Block\Admin\Customer\Edit\Tabs\Form']);
+            $this->addTab('Address',['label' => 'Addresses', 'block' => 'Block\Admin\Customer\Edit\Tabs\Address']);
             $this->setDefaultTab('customer');
             return $this;
         }

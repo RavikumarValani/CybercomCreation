@@ -57,7 +57,9 @@ Base.prototype = {
 
     setForm : function(formId) {
         this.form = formId;
-        this.setFormData();
+        this.setParams($(formId).serialize());
+        this.setMethod($(formId).attr('method'));
+        this.setUrl($(formId).attr('action'));
         return this;
     },
     getForm : function(){
@@ -74,7 +76,6 @@ Base.prototype = {
                 self.manageHtml(response);
             }
           });
-          
     },
 
   
@@ -87,46 +88,33 @@ Base.prototype = {
         if(typeof response.element == 'object')
         {
             $(response.element).each(function(i, element) {
-                $(element.selector).html(element.html);     
+                $(element.selector).html(element.html);
             })
         }
         else
         {
-            // $(response.element.selector).html(response.element.html);
+            $(response.element.selector).html(response.element.html);
         }
     },
 
-    setFormData : function(){
-        this.setUrl($(this.getForm()).attr('action'));
-        this.setMethod($(this.getForm()).attr('method'));
-        this.setParams($(this.getForm()).serializeArray());
+    uploadFile : function () {
+        var form_data = new FormData();
+        var file = $("#file")[0].files;
+        form_data.append('image', file[0]);
+        this.setParams(form_data);
+        self = this;
+        var request = $.ajax({
+            method : this.getMethod(),
+            url : this.getUrl(),
+            contentType : false,
+            processData : false,
+            data : this.getParams(),
+            success : function (response) {
+                self.manageHtml(response);
+            }
+        });          
         return this;
-    },
-
-    setCms : function(){
-        var formId = '#'+$('form').attr('id');
-        CMSContent = CKEDITOR.instances['CMSPage[content]'].getData();
-        
-        this.setParams($(formId).serializeArray());
-        this.setUrl($(formId).attr('action'));
-        this.setMethod($(formId).attr('method'));
-
-        $.each(this.params, function(i,val){
-            if(val['name'] == 'CMSPage[content]'){
-                val['value'] = CMSContent;
-            } 
-        });
-
-        return this;
-    },
-
-    uploadFile : function(){
-        var data = new FormData();
-        var file = $('#media')[0].files;
-        form.append('product', file[0]);
     }
 }
 
 var mage = new Base();
-mage.setUrl('http://localhost:8080/cybercom1/index.php?c=index&a=index') ;
-mage.load();

@@ -7,10 +7,15 @@ namespace Controller\Admin\Cart;
     {
         public function indexAction()
         {
-            $layout = $this->getLayout();
-            $checkoutBlock = \Mage::getBlock('Admin\Cart\Checkout');
-            $layout->getContent()->addChild($checkoutBlock);
-            $this->toLayoutHtml();
+            $gridHtml = \Mage::getBlock('Admin\Cart\Checkout')->toHtml();
+                $response = [
+                    'element' => [
+                        'selector' => '#contentHtml',
+                        'html' => $gridHtml
+                    ]
+                ];
+                header("Content-Type: application/json");
+                echo json_encode($response);
         }
 
         public function saveAction()
@@ -107,8 +112,8 @@ namespace Controller\Admin\Cart;
                 
             } catch (\Exception $e) {
                 $this->getMessage()->setFailure($e->getMessage());
-            }   
-            $this->redirect('index',null,null,true);
+            }  
+            $this->indexAction(); 
         }
 
         public function saveDetailsAction()
@@ -147,7 +152,7 @@ namespace Controller\Admin\Cart;
                 $cart->discount = $productData['discount'];
                 $cart->save();
             }
-            $this->redirect('index',null,null,true);
+            $this->indexAction();
         }
     }
     

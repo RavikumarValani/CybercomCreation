@@ -16,7 +16,7 @@
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item" onclick="mage.setUrl('<?php echo $this->getUrl()->getUrl('grid','product'); ?>').load();" href="javascript:void(0);">Product  List</a></li>
-                            <li><a class="dropdown-item" onclick="mage.setUrl('<?php echo $this->getUrl()->getUrl('form','product'); ?>').load();" href="javascript:void(0);">Add product</a></li>
+                            <li><a class="dropdown-item" onclick="mage.setUrl('<?php echo $this->getUrl()->getUrl('form','product'); ?>').load();" href="javascript:void(0);" >Add product</a></li>
                             
                         </ul>
                     </li>
@@ -62,6 +62,15 @@
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            CMS Page
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" onclick="mage.setUrl('<?php echo $this->getUrl()->getUrl('grid','CMSPage'); ?>').load();" href="javascript:void(0);">CMS List</a></li>
+                            <li><a class="dropdown-item" onclick="mage.setUrl('<?php echo $this->getUrl()->getUrl('form','CMSPage'); ?>').load();" href="javascript:void(0);">Add CMS</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Attribute
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -83,8 +92,7 @@
                             Config
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" onclick="mage.setUrl('<?php echo $this->getUrl()->getUrl('grid','config'); ?>').load();" href="javascript:void(0);">Config List</a></li>
-                            <li><a class="dropdown-item" onclick="mage.setUrl('<?php echo $this->getUrl()->getUrl('grid','config'); ?>').load();" href="javascript:void(0);">Add Config</a></li>
+                            <li><a class="dropdown-item" onclick="mage.setUrl('<?php echo $this->getUrl()->getUrl('grid','config\group'); ?>').load()">Config Group</a></li>
                         </ul>
                     </li>
                 </ul>

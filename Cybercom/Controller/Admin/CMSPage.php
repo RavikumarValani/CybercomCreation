@@ -31,7 +31,9 @@ namespace Controller\Admin;
         {
             try 
             {
+                
                 $edit = \Mage::getBlock('Admin\CMSPage\Edit');
+                
                 $editHtml = $edit->toHtml();
                 $response = [
                     'element' => [
@@ -41,21 +43,9 @@ namespace Controller\Admin;
                 ];
                 header("Content-Type: application/json");
                 echo json_encode($response);
-
-                $CMSPage = \Mage::getModel('CMSPage');
-                if($pageId = (int) $this->getRequest()->getGet('pageID'))
-                {
-                    $CMSPage->load($pageId);
-                    if(!$CMSPage)
-                    {
-                        $this->getMessage()->setFailure('Unable to Find Data.');   
-                    }
-                }
-                $edit->setTableRow($CMSPage);
             } catch (\Exception $e) {
                 $this->getMessage()->setFailure($e->getMessage());
             }
-            $this->redirect('grid',null,null,true);
         }
         public function saveAction()
         {
@@ -81,7 +71,7 @@ namespace Controller\Admin;
             } catch (\Exception $e) {
                 $this->getMessage()->setFailure($e->getMessage());
            }
-           $this->redirect('grid',null,null,true);
+           $this->gridAction();
         }
         public function deleteAction()
         {
@@ -103,7 +93,7 @@ namespace Controller\Admin;
             } catch (\Exception $e) {
                 $this->getMessage()->setFailure($e->getMessage());
             }
-            $this->redirect('grid', null, null, true);
+            $this->gridAction();
         }
         
         public function statusAction()
@@ -130,7 +120,7 @@ namespace Controller\Admin;
            } catch (\Exception $e) {
                 $this->getMessage()->setFailure($e->getMessage());
            }
-           $this->redirect('grid', null, null, true);
+           $this->gridAction();
         }
     }
 ?>

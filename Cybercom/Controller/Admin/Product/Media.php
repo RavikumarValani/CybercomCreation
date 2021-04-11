@@ -21,13 +21,16 @@ namespace Controller\Admin\Product;
         {
             try 
             {
-                $layout = $this->getLayout();
-
-                $content = $layout->getContent();
-                $gridBlock = \Mage::getBlock('Admin\Product\Edit\Tabs\Media');
-                $content->addChild($gridBlock);
-
-                $this->toLayoutHtml();
+            
+                $gridHtml = \Mage::getBlock('Admin\Product\Edit\Tabs\Media')->toHtml();
+                $response = [
+                    'element' => [
+                        'selector' => '#contentHtml',
+                        'html' => $gridHtml
+                    ]
+                ];
+                header("Content-Type: application/json");
+                echo json_encode($response);
             } catch (\Exception $e) {
                 $this->getMessage()->setFailure($e->getMessage());
             }
@@ -37,18 +40,26 @@ namespace Controller\Admin\Product;
         {
             try 
             {
-                $layout = $this->getLayout();
 
-                $content = $layout->getContent();
-                $formBlock = \Mage::getBlock('Admin\Product\Edit\Tabs\Media');
-                $content->addChild($formBlock);
+                $editHtml = \Mage::getBlock('Admin\Product\Edit\Tabs\Media')->toHtml();
+                $leftBar = \Mage::getBlock('Admin\Product\Edit\Tabs')->toHtml(); 
 
-                $leftContent = $layout->getLeft();
-                $leftSide = \Mage::getBlock('Admin\Product\Edit\Tabs');
-                $leftContent->addChild($leftSide);
+                $response = [
+                    'status' => 'success',
+                    'element' => [
+                        [
+                            'selector' => '#contentHtml',
+                            'html' => $editHtml
+                        ],
+                        [
+                            'selector' => '#tabContent',
+                            'html' => $leftBar
+                        ]
+                    ]
+                ];
+                header("Content-Type: application/json");
+                echo json_encode($response);
 
-                
-                $this->toLayoutHtml();
             } catch (\Exception $e) {
                 $this->getMessage()->setFailure($e->getMessage());
             } 
@@ -90,11 +101,11 @@ namespace Controller\Admin\Product;
                 {
                     $this->getMessage()->setFailure('Unable To Upload Image');
                 }
-                $this->redirect('grid');
                 
             } catch (\Exception $e) {
                 $this->getMessage()->setFailure($e->getMessage());
             }
+            $this->gridAction();
         }
         public function updateAction()
         {
@@ -141,6 +152,15 @@ namespace Controller\Admin\Product;
                         $productMedia->save();
                     }  
 
+                    if($key == 'remove')
+                    {
+                        foreach($imageData['remove'] as $imageId => $value)
+                        {
+                            $productMedia = $productMedia->load($imageId);
+                            $productMedia->delete($imageId);
+                        }
+                    }
+
                     if($value == null)
                     {
                         $this->getMessage()->setFailure('Please select any one field.');
@@ -151,25 +171,7 @@ namespace Controller\Admin\Product;
             } catch (\Exception $e) {
                 $this->getMessage()->setFailure($e->getMessage());
             }
-            $this->redirect('grid');
-        }
-
-        public function deleteAction()
-        {
-            try
-            {
-                $productMedia = \Mage::getModel('Product\Media');
-
-                $imageData = $this->getRequest()->getPost('image');
-                foreach($imageData['remove'] as $imageId => $value)
-                {
-                    $productMedia = $productMedia->load($imageId);
-                    $productMedia->delete($imageId);
-                }
-            } catch (\Exception $e) {
-                $this->getMessage()->setFailure($e->getMessage());
-            }
-            $this->redirect('grid');
+            $this->gridAction();
         }
 
     }

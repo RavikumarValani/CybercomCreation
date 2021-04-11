@@ -1,6 +1,6 @@
 <?php $billingAddress = $this->getBillingAddress(); ?>
 <?php $shippingAddress = $this->getShippingAddress(); ?>
-    <form class="row g-3" style="padding-top: 0px;" method="POST" action="<?php echo $this->getUrl()->getUrl('save','Customer\Address'); ?>">
+    <form class="row g-3" style="padding-top: 0px;" id="address" method="POST" action="<?php echo $this->getUrl()->getUrl('save','Customer\Address'); ?>">
 <div class="row">
 <div class="col-6 p-5 border border-dark ">
     <div class="container">
@@ -76,6 +76,6 @@
 </div>
 </div>
         <div class="col-12" style="text-align: center;padding-top:40px;">
-            <input type="submit" class="btn btn-primary" value="Save">
+            <button type="button" class="btn btn-primary" onclick="mage.setForm('#address').load()">Save</button>
         </div>
 </form>

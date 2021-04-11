@@ -9,6 +9,12 @@ namespace Block\Admin\Index;
         {
             $this->setTemplate('./view/admin/index/index.php');
         }
+
+        public function getCustomers()
+        {
+            $customer =  \Mage::getModel('Customer');
+            return $customer->fetchAll();
+        }
     }
     
 ?>

@@ -7,10 +7,26 @@ namespace Controller\Admin;
     {
         public function indexAction()
         {
-            $block = \Mage::getBlock('Admin\Order\Order');
-            $layout = $this->getLayout();
-            $layout->getContent()->addChild($block);
-            $this->toLayoutHtml();
+            try 
+            {
+                $session = \Mage::getModel('admin\session');
+                $customerId = $session->customerId;
+                $grid = \Mage::getBlock('Admin\Order\Grid');
+                $grid->setOrder($customerId);
+
+                $session->destroy();
+                $gridHtml = $grid->toHtml();
+                $response = [
+                    'element' => [
+                        'selector' => '#contentHtml',
+                        'html' => $gridHtml
+                        ]
+                    ];
+                    header("Content-Type: application/json");
+                    echo json_encode($response);
+            } catch (\Exception $e) {
+                $this->getMessage()->setFailure($e->getMessage());
+            }
         }
 
         public function saveAction()
@@ -69,9 +85,8 @@ namespace Controller\Admin;
             } catch (\Exception $e) {
                 $this->getMessage()->setFailure($e->getMessage());
             }
-            $session = \Mage::getModel('admin\session');
-            $session->destroy();
-            $this->redirect('index');
+            
+            $this->indexAction();
         }
     }
     

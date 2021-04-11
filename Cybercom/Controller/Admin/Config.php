@@ -5,6 +5,7 @@ namespace Controller\Admin;
 
     class Config extends \Controller\Core\Admin 
     {
+        
         public function gridAction()
         {
             try
@@ -24,70 +25,46 @@ namespace Controller\Admin;
             }
         }
 
-        public function formAction()
-        {
-            try 
-            {
-                $edit = \Mage::getBlock('Admin\Config\Edit\Tabs\Form');
-                $editHtml = $edit->toHtml();
-                $leftBar = \Mage::getBlock('Admin\Config\Edit\Tabs')->toHtml(); 
-
-                $response = [
-                    'element' => [
-                        [
-                            'selector' => '#contentHtml',
-                            'html' => $editHtml
-                        ],
-                        [
-                            'selector' => '#tabContent',
-                            'html' => $leftBar
-                        ]
-                    ]
-                ];
-                header("Content-Type: application/json");
-                echo json_encode($response);
-
-                $configId = $this->getRequest()->getGet('configId');
-                $config = \Mage::getModel('Config');
-                if($configId)
-                {
-                    $configData = $config->load($configId);
-                    if(!$configData)
-                    {
-                        $this->getMessage()->setFailure('Data not found.');
-                    }
-                }
-                
-                $edit->setTableRow($config);
-                
-            }catch (\Exception $e) {
-                $this->getMessage()->setFailure($e->getMessage());
-            }
-            
-        }
+        
 
         function saveAction()
         {
             
             try 
             {
-                $configData = $this->getRequest()->getPost('config');
-                print_r($configData);
+                $configData = $this->getRequest()->getPost();
                 
-                $configId = $this->getRequest()->getGet('configId');
-                $config = \Mage::getModel('Config');
-                if($configId)
-                {
-                    $config->load($configId);
-                    $config->updateddate = date("Y-m-d H:i:s");
+                $groupId = $this->getRequest()->getGet('groupId');
+
+                foreach ($configData['exist'] as $key => $value) {
+                    $config = \Mage::getModel('Config');
+                    $query = "SELECT * FROM `{$config->getTableName()}` 
+                    WHERE groupId = '{$groupId}'";
+                    $config->fetchRow($query);
+                    $config->name = $value['title'];
+                    $config->name = $value['code'];
+                    $config->name = $value['value'];
+                    $config->save();
+
                 }
-                $config->setData($configData);
-                $config->createddate = date("Y-m-d H:i:s");
-                $config->save();
+                
+                foreach ($configData['new'] as $key => $value) {
+                    foreach($value as $key2 =>$data)
+                    {
+                        $newData[$key2][$key] = $data;    
+                    }
+                }
+                foreach ($newData as $key => $value) {
+                    $config = \Mage::getModel('Config');
+                    $config->groupId = $groupId;
+                    $config->setData($value);
+                    $config->createddate = date("Y-m-d H:i:s");
+                    $config->save();
+                }
             } catch (\Exception $e) {
                 $this->getMessage()->setFailure($e->getMessage());
             }
-            $this->redirect('grid',null,null,true);
+            $this->gridAction();
         }
 
         public function deleteAction()
@@ -95,17 +72,19 @@ namespace Controller\Admin;
             try 
             {
                 $configId = $this->getRequest()->getGet('configId');
+       
                 $config = \Mage::getModel('config');
+
                 if(!$configId)
                 {
-                    $this->setMessage('Id Not Found');
+                    $this->getMessage()->setFailure('Id Not Found');
                 }
                 $config->delete($configId);
 
             } catch (\Exception $e) {
                 $this->getMessage()->setFailure($e->getMessage());
             }
-            $this->redirect('grid');
+            $this->gridAction();
         }
     }
     

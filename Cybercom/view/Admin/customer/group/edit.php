@@ -3,7 +3,7 @@
     <div class="container">
         <h1 style="margin-bottom: 40px;">Add Detail</h1>
     </div>
-    <form class="row g-3" style="padding-top: 0px;" method="POST"
+    <form class="row g-3" id="group" style="padding-top: 0px;" method="POST"
         action="<?php echo $this->getUrl()->getUrl('save'); ?>">
         <div class="row justify-content-start">
             <div class="row justify-content-start">
@@ -19,7 +19,7 @@
                 </div>
             </div>
             <div class="col-12" style="text-align: center;padding-top:40px;">
-                <input type="submit" class="btn btn-primary" value="Save">
+                <button type="button" class="btn btn-primary" onclick="mage.setForm('#group').load()">Save</button>
             </div>
 
     </form>

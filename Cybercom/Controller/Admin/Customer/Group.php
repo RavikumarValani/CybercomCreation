@@ -11,11 +11,6 @@ namespace Controller\Admin\Customer;
             try 
             {
                 $edit = \Mage::getBlock('Admin\Customer\Group\Edit');
-
-                $layout = $this->getLayout();
-
-                $layout->getContent()->addChild($edit);
-
                 $group = \Mage::getModel('Customer\Group');
                 if($groupId = (int) $this->getRequest()->getGet('groupId'))
                 {
@@ -25,10 +20,27 @@ namespace Controller\Admin\Customer;
                         $this->getMessage()->setFailure('Unable to Find Data.');   
                     }
                 }
-
-                $edit->setTableRow($group);
                 
-                $this->tolayoutHtml();
+                
+                $edit->setTableRow($group);
+
+                $editHtml = $edit->toHtml();
+                $leftBar = \Mage::getBlock('Admin\Customer\Edit\Tabs')->toHtml(); 
+
+                $response = [
+                    'element' => [
+                        [
+                            'selector' => '#contentHtml',
+                            'html' => $editHtml
+                        ],
+                        [
+                            'selector' => '#tabContent',
+                            'html' => $leftBar
+                        ]
+                    ]
+                ];
+                header("Content-Type: application/json");
+                echo json_encode($response);
             } catch (\Exception $e) {
                 $this->getMessage()->setFailure($e->getMessage());
             }
@@ -38,13 +50,15 @@ namespace Controller\Admin\Customer;
         {
             try 
             {
-                $layout = $this->getLayout();
-                $grid = \Mage::getBlock('Admin\Customer\Group\Grid');
-                $layout = $this->getLayout();
-
-                $layout->getContent()->addChild($grid);
-
-                $this->tolayoutHtml();
+                $gridHtml = \Mage::getBlock('Admin\Customer\Group\Grid')->toHtml();
+                $response = [
+                    'element' => [
+                        'selector' => '#contentHtml',
+                        'html' => $gridHtml
+                    ]
+                ];
+                header("Content-Type: application/json");
+                echo json_encode($response);
             } catch (\Exception $e) {
                 $this->getMessage()->setFailure($e->getMessage());
             }
@@ -67,7 +81,47 @@ namespace Controller\Admin\Customer;
             } catch (\Exception $e) {
                 echo $e->getMessage();
             }
-            $this->redirect('grid',null,null,true);
+            $this->gridAction();
+        }
+
+        public function deleteAction()
+        {
+            try 
+            {
+                $groupId = $this->getRequest()->getGet('groupId');
+                $group = \Mage::getModel('Customer\Group');
+                if(!$groupId)
+                {
+                    $this->getMessage()->setFailure('Id not found.');
+                }
+                $group->load($groupId);
+                if(!$group)
+                {
+                    $this->getMessage()->setFailure('Data not found.');
+                }
+                $group->delete($groupId);
+               
+                
+            } catch (\Exception $e) {
+                $this->getMessage()->setFailure($e->getMessage());
+            }  
+            $this->gridAction();
+        }
+
+        public function filterAction()
+        {
+            
+            try 
+            {
+                $filters = $this->getRequest()->getPost('filter');
+            
+                $filter = \Mage::getModel('Core\Filter');
+                $filter->setFilters($filters);
+
+            } catch (\Exception $e) {
+                $this->getMessage()->setFailure($e->getMessage());
+            }
+            $this->gridAction();
         }
     }
     

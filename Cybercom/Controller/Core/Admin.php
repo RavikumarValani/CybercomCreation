@@ -57,7 +57,7 @@ namespace Controller\Core;
         }
         public function redirect($actionName=null,$controllerName=null,$params=null,$resetParams=false)
         {
-            header("location: ".$this->getUrl($actionName,$controllerName,$params,$resetParams));
+            header("location:".$this->getUrl($actionName,$controllerName,$params,$resetParams));
             exit(0);
         }
 
@@ -89,4 +89,3 @@ namespace Controller\Core;
             return "http://localhost:8080/cybercom1/index.php?{$urlString}";
         }
     }
-?>

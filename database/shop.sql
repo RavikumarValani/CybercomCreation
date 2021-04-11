@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 07, 2021 at 06:17 AM
+-- Generation Time: Apr 11, 2021 at 04:01 PM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.2.34
 
@@ -42,7 +42,8 @@ CREATE TABLE `admin` (
 INSERT INTO `admin` (`adminId`, `username`, `password`, `status`, `createddate`) VALUES
 (1, 'ravi', '54646bnvbcg', 1, '2021-04-06 10:08:56.000000'),
 (2, 'sahil', 'bgfbgf2215', 1, '2021-04-06 10:09:23.000000'),
-(3, 'vijay', 'dvdf', 1, '2021-04-06 10:09:37.000000');
+(4, 'Sanjai', '264hhfg', 1, '2021-04-07 21:45:10.000000'),
+(5, 'Mahesh', 'ahedh12345', 1, '2021-04-07 21:46:23.000000');
 
 -- --------------------------------------------------------
 
@@ -66,11 +67,10 @@ CREATE TABLE `attribute` (
 --
 
 INSERT INTO `attribute` (`attributeId`, `name`, `entityTypeId`, `code`, `inputType`, `backEndType`, `sortOrder`, `backEndModel`) VALUES
-(1, 'color', 'product', 'color', 'Radio', 'Text', 1, 'attribute_option'),
-(2, 'type', 'product', 'type', 'Text Box', 'Varchar', 2, 'attribute_option'),
-(3, 'brand', 'product', 'brand', 'Text Box', 'Varchar', 2, 'attribute_option'),
-(4, 'Material', 'product', 'Material', 'Select', 'Varchar', 2, 'attribute_option'),
-(6, 'style', 'product', 'style', 'Radio', 'Varchar', 2, 'attribute_option');
+(1, 'color', 'product', 'color', 'select', 'Varchar', 1, 'attribute_option'),
+(2, 'type', 'product', 'type', 'select', 'Varchar', 2, 'attribute_option'),
+(3, 'brand', 'product', 'brand', 'radio', 'Varchar', 2, 'attribute_option'),
+(7, 'Material', 'product', 'Material', 'select', 'Text', 1, 'attribute_option');
 
 -- --------------------------------------------------------
 
@@ -96,7 +96,11 @@ INSERT INTO `attribute_option` (`optionId`, `name`, `attributeId`, `sortOrder`) 
 (4, 'red', 1, '2'),
 (5, 'yellow', 1, '2'),
 (6, 'Hp', 3, '2'),
-(7, 'Lenovo', 3, '1');
+(7, 'Lenovo', 3, '1'),
+(8, 'a', 2, '1'),
+(9, 'b', 2, '2'),
+(10, 'c', 2, '3'),
+(17, 'd', 2, '1');
 
 -- --------------------------------------------------------
 
@@ -179,12 +183,9 @@ CREATE TABLE `category` (
 --
 
 INSERT INTO `category` (`categoryId`, `name`, `parentId`, `pathId`, `status`, `description`, `createddate`, `updateddate`) VALUES
-(1, 'bedroom', 0, '1', 1, 'abc', '2021-04-04 04:18:07.000000', NULL),
-(2, 'beds', 1, '1=2', 1, 'abc', '2021-04-06 07:06:06.000000', NULL),
+(1, 'bedroom', 0, '1', 0, 'abc', '2021-04-04 04:18:07.000000', NULL),
+(2, 'beds', 1, '1=2', 0, 'abc', '2021-04-10 08:45:08.000000', NULL),
 (3, 'panel beds', 2, '1=2=3', 1, 'a', '2021-04-06 08:09:01.000000', NULL),
-(4, 'kitchen', 0, '4', 1, 'a', '2021-04-06 08:04:04.000000', NULL),
-(5, 'dining table', 4, '4=5', 1, 'a', '2021-04-06 08:04:20.000000', NULL),
-(6, 'fridge', 4, '4=6', 1, 'a', '2021-04-06 08:04:47.000000', NULL),
 (7, 'footboard', 3, '1=2=3=7', 1, 'a', '2021-04-06 08:05:26.000000', NULL),
 (8, 'headboard', 3, '1=2=3=8', 1, 'a', '2021-04-06 08:05:42.000000', NULL);
 
@@ -231,7 +232,11 @@ CREATE TABLE `config` (
 --
 
 INSERT INTO `config` (`configId`, `groupId`, `title`, `code`, `value`, `createddate`, `updateddate`) VALUES
-(1, 5, 'website', 'web_site', 'web', '2021-04-05 10:20:28.000000', '2021-04-05 10:20:28.000000');
+(1, 4, 'website', 'web_site', 'web', '2021-04-08 10:08:18.000000', '0000-00-00 00:00:00.000000'),
+(4, 2, 'web', 'web', '12', '2021-04-09 11:29:17.000000', '0000-00-00 00:00:00.000000'),
+(5, 5, 'web', 'web', '12', '2021-04-09 11:29:45.000000', '0000-00-00 00:00:00.000000'),
+(6, 5, 'web', 'web', '12', '2021-04-09 11:30:20.000000', '0000-00-00 00:00:00.000000'),
+(7, 2, 'web', 'b', '12', '2021-04-11 15:13:01.000000', '0000-00-00 00:00:00.000000');
 
 -- --------------------------------------------------------
 
@@ -240,7 +245,6 @@ INSERT INTO `config` (`configId`, `groupId`, `title`, `code`, `value`, `createdd
 --
 
 CREATE TABLE `config_group` (
-  `entityId` int(11) NOT NULL,
   `groupId` int(11) NOT NULL,
   `name` varchar(32) NOT NULL,
   `createddate` datetime(6) NOT NULL
@@ -250,10 +254,11 @@ CREATE TABLE `config_group` (
 -- Dumping data for table `config_group`
 --
 
-INSERT INTO `config_group` (`entityId`, `groupId`, `name`, `createddate`) VALUES
-(3, 5, 'a1', '2021-04-05 10:19:35.000000'),
-(4, 5, 'a2', '2021-04-05 10:19:47.000000'),
-(5, 5, 'a3', '2021-04-05 10:19:47.000000');
+INSERT INTO `config_group` (`groupId`, `name`, `createddate`) VALUES
+(2, 'g2', '2021-04-10 13:51:24.000000'),
+(4, 'g1', '2021-04-09 08:20:13.000000'),
+(5, 'g3', '2021-04-09 09:02:05.000000'),
+(7, 'g4', '2021-04-11 15:15:29.000000');
 
 -- --------------------------------------------------------
 
@@ -279,12 +284,10 @@ CREATE TABLE `customer` (
 --
 
 INSERT INTO `customer` (`customerId`, `groupId`, `firstname`, `lastname`, `email`, `password`, `mobile`, `status`, `createddate`, `updateddate`) VALUES
-(1, 1, 'ravi', 'valani', 'valani@gmail.com', '123456', 2147483647, 1, '2021-04-06 16:04:10.000000', '2021-04-06 16:04:10.000000'),
-(2, 2, 'ajay', 'jadav', 'jadav@gmail.com', 'okjk56', 2147483647, 1, '2021-04-06 09:13:46.000000', '2021-04-06 09:13:46.000000'),
-(3, 3, 'sahil', 'vasoya', 'vasoya@gmail.com', 'mnmnkmd66', 2147483647, 1, '2021-04-04 12:38:27.000000', NULL),
-(4, 1, 'jecky', 'samani', 'jecky@gmail.com', '123jjgh56', 2147483647, 1, '2021-04-04 12:38:30.000000', NULL),
-(5, 2, 'manan', 'soni', 'soni@gmail.com', 'bjhvh2154', 2147483647, 1, '2021-04-06 16:03:31.000000', '2021-04-06 16:03:31.000000'),
-(6, 4, 'savan', 'satroliya', 'savan@gmail.com', 'hhjvnb1646516', 2147483647, 1, '2021-04-04 12:38:37.000000', NULL);
+(1, 1, 'ravi', 'valani', 'valani@gmail.com', '123456', 2147483647, 1, '2021-04-10 13:50:19.000000', '2021-04-10 13:50:19.000000'),
+(2, 2, 'ajay', 'jadav', 'jadav@gmail.com', 'okjk56', 2147483647, 1, '2021-04-10 06:59:08.000000', '2021-04-10 06:59:08.000000'),
+(3, 3, 'sahil', 'vasoya', 'vasoya@gmail.com', 'mnmnkmd66', 2147483647, 1, '2021-04-09 12:40:27.000000', '2021-04-09 12:40:27.000000'),
+(4, 1, 'jecky', 'samani', 'jecky@gmail.com', '123jjgh56', 2147483647, 1, '2021-04-09 12:37:17.000000', '2021-04-09 12:37:17.000000');
 
 -- --------------------------------------------------------
 
@@ -308,18 +311,14 @@ CREATE TABLE `customer_address` (
 --
 
 INSERT INTO `customer_address` (`addressId`, `customerId`, `address`, `city`, `state`, `country`, `zip`, `type`) VALUES
-(1, 1, 'Moti lakhavad,Rajkot,Vinchhiya', 'Vinchhiya', 'Gujrat', 'India', 123, 'billing'),
+(1, 1, 'Moti lakhavad,Rajkot,Vinchhiya', 'Vinchhiya', 'Gujrat', 'India', 1234, 'billing'),
 (3, 1, 'Moti lakhavad,Rajkot,Vinchhiya', 'Vinchhiya', 'Gujrat', 'India', 123, 'shipping'),
 (7, 3, 'gokul nagar,ram mandir ,street 9, mujka,rajkot', 'rajkot', 'gujrat', 'India', 360001, 'billing'),
 (8, 3, 'xyz,street 9,mujka,rajkot', 'rajkot', 'gujrat', 'India', 360001, 'shipping'),
 (9, 2, 'abc,street 8,mujka,rajkot', 'rajkot', 'gujrat', 'India', 360001, 'billing'),
 (10, 2, 'abc,street 8,mujka,rajkot', 'rajkot', 'gujrat', 'India', 360001, 'shipping'),
 (11, 4, 'abc,street 3,mujka,rajkot', 'rajkot', 'gujrat', 'India', 360001, 'billing'),
-(12, 4, 'abc,street 3,mujka,rajkot', 'rajkot', 'gujrat', 'India', 360001, 'shipping'),
-(13, 5, 'gokul nagar,ram mandir ,street 2, mujka,rajkot', 'rajkot', 'gujrat', 'India', 360001, 'billing'),
-(14, 5, 'gokul nagar,ram mandir ,street 2, mujka,rajkot', 'rajkot', 'gujrat', 'India', 360001, 'shipping'),
-(15, 6, 'xyzavcx,street 56,mujka,rajkot', 'rajkot', 'gujrat', 'India', 360001, 'billing'),
-(16, 6, 'xyzavcx,street 56,mujka,rajkot', 'rajkot', 'gujrat', 'India', 360001, 'shipping');
+(12, 4, 'abc,street 3,mujka,rajkot', 'rajkot', 'gujrat', 'India', 360001, 'shipping');
 
 -- --------------------------------------------------------
 
@@ -369,7 +368,15 @@ CREATE TABLE `orderaddress` (
 
 INSERT INTO `orderaddress` (`orderAddressId`, `addressId`, `customerId`, `address`, `city`, `state`, `country`, `zip`, `type`) VALUES
 (1, 1, 1, 'Moti lakhavad,Rajkot,Vinchhiya', 'Vinchhiya', 'Gujrat', 'India', 123, 'shipping'),
-(2, 1, 1, 'Moti lakhavad,Rajkot,Vinchhiya', 'Vinchhiya', 'Gujrat', 'India', 123, 'billing');
+(2, 1, 1, 'Moti lakhavad,Rajkot,Vinchhiya', 'Vinchhiya', 'Gujrat', 'India', 123, 'billing'),
+(3, 1, 1, 'Moti lakhavad,Rajkot,Vinchhiya', 'Vinchhiya', 'Gujrat', 'India', 1234, 'billing'),
+(4, 3, 1, 'Moti lakhavad,Rajkot,Vinchhiya', 'Vinchhiya', 'Gujrat', 'India', 1234, 'shipping'),
+(5, 1, 1, 'Moti lakhavad,Rajkot,Vinchhiya', 'Vinchhiya', 'Gujrat', 'India', 1234, 'billing'),
+(6, 3, 1, 'Moti lakhavad,Rajkot,Vinchhiya', 'Vinchhiya', 'Gujrat', 'India', 123, 'shipping'),
+(7, 1, 1, 'Moti lakhavad,Rajkot,Vinchhiya', 'Vinchhiya', 'Gujrat', 'India', 1234, 'billing'),
+(8, 3, 1, 'Moti lakhavad,Rajkot,Vinchhiya', 'Vinchhiya', 'Gujrat', 'India', 123, 'shipping'),
+(9, 1, 1, 'Moti lakhavad,Rajkot,Vinchhiya', 'Vinchhiya', 'Gujrat', 'India', 1234, 'billing'),
+(10, 3, 1, 'Moti lakhavad,Rajkot,Vinchhiya', 'Vinchhiya', 'Gujrat', 'India', 123, 'shipping');
 
 -- --------------------------------------------------------
 
@@ -394,7 +401,15 @@ INSERT INTO `orderitem` (`itemId`, `productId`, `quantity`, `price`, `discount`,
 (1, 2, 1, '5849.00', '1.00', '2021-04-06 00:00:00.000000'),
 (2, 1, 1, '9459.00', '1.00', '2021-04-06 00:00:00.000000'),
 (3, 4, 1, '4899.00', '3.00', '2021-04-06 00:00:00.000000'),
-(4, 6, 1, '48989.00', '1.00', '2021-04-06 00:00:00.000000');
+(4, 6, 1, '48989.00', '1.00', '2021-04-06 00:00:00.000000'),
+(5, 2, 10, '5849.00', '1.00', '2021-04-11 00:00:00.000000'),
+(6, 4, 9, '4899.00', '3.00', '2021-04-11 00:00:00.000000'),
+(7, 8, 1, '32699.00', '3.00', '2021-04-11 00:00:00.000000'),
+(8, 5, 1, '41324.00', '2.00', '2021-04-11 00:00:00.000000'),
+(9, 3, 1, '10969.00', '2.00', '2021-04-11 00:00:00.000000'),
+(10, 2, 1, '5849.00', '1.00', '2021-04-11 00:00:00.000000'),
+(11, 2, 1, '5849.00', '1.00', '2021-04-11 00:00:00.000000'),
+(12, 3, 1, '10969.00', '2.00', '2021-04-11 00:00:00.000000');
 
 -- --------------------------------------------------------
 
@@ -418,7 +433,11 @@ CREATE TABLE `ordertable` (
 --
 
 INSERT INTO `ordertable` (`orderId`, `customerId`, `paymentmethodId`, `shippingmethodId`, `shippingAmount`, `total`, `discount`, `createddate`) VALUES
-(1, 1, 4, 3, 60, '19906.95', '300.05', '2021-04-06 00:00:00.000000');
+(1, 1, 4, 3, 60, '19906.95', '300.05', '2021-04-06 00:00:00.000000'),
+(2, 1, 2, 2, 70, '167792.60', '19780.40', '2021-04-11 00:00:00.000000'),
+(3, 1, 2, 1, 100, '5790.51', '58.49', '2021-04-11 00:00:00.000000'),
+(4, 1, 2, 2, 70, '5790.51', '58.49', '2021-04-11 00:00:00.000000'),
+(5, 1, 3, 3, 60, '10749.62', '219.38', '2021-04-11 00:00:00.000000');
 
 -- --------------------------------------------------------
 
@@ -442,9 +461,7 @@ CREATE TABLE `payment` (
 INSERT INTO `payment` (`paymentId`, `name`, `code`, `description`, `status`, `createddate`) VALUES
 (1, 'creadit card', '1256', 'card', 1, '2021-04-04 12:45:59.000000'),
 (2, 'debit card', '1545', 'card', 1, '2021-04-04 12:46:03.000000'),
-(3, 'bank', '995664', 'bank', 1, '2021-04-04 12:46:07.000000'),
-(4, 'paytm', '456', 'paytm', 1, '2021-04-04 12:46:11.000000'),
-(5, 'paypal', '5454', 'pay', 1, '2021-04-06 09:17:14.000000');
+(3, 'bank', '995664', 'bank', 1, '2021-04-04 12:46:07.000000');
 
 -- --------------------------------------------------------
 
@@ -470,16 +487,17 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`productId`, `sku`, `name`, `price`, `discount`, `quantity`, `description`, `status`, `createddate`, `updateddate`) VALUES
-(1, 's1', 'Drawer', '9459.00', '1.00', 40, 'abc', 1, '2021-04-07 05:11:57.000000', '2021-04-07 05:11:57.000000'),
-(2, 's2', 'coffee table', '5849.00', '1.00', 40, 'abc', 1, '2021-04-06 18:09:20.000000', '2021-04-06 18:09:20.000000'),
-(3, 's3', 'computer desk', '10969.00', '2.00', 20, 'a', 1, '2021-04-06 18:10:35.000000', '2021-04-06 18:10:35.000000'),
-(4, 's4', 'hutch desks', '4899.00', '3.00', 30, 'abc', 1, '2021-04-06 07:55:56.000000', '2021-04-06 07:55:56.000000'),
-(5, 's5', '3 seater sofas', '41324.00', '2.00', 30, 'ads', 1, '2021-04-04 07:40:54.000000', NULL),
-(6, 's6', 'sofa bed', '48989.00', '1.00', 40, 'abc', 1, '2021-04-04 07:41:01.000000', NULL),
-(7, 's7', '3 door wardrobe', '11156.00', '1.00', 20, 'abc', 1, '2021-04-04 07:41:06.000000', NULL),
-(8, 's8', '6 seater dining table', '32699.00', '3.00', 20, 'abc', 1, '2021-04-04 07:41:11.000000', NULL),
-(9, 's9', 'writing table', '7499.00', '1.00', 40, 'abc', 1, '2021-04-04 07:41:15.000000', NULL),
-(10, 's10', 'chair', '499.00', '1.00', 50, 'abc', 1, '2021-04-06 04:19:57.000000', '2021-04-06 04:19:57.000000');
+(2, 's2', 'coffee table', '5849.00', '1.00', 40, 'abc', 1, '2021-04-09 18:36:10.000000', '2021-04-10 15:23:09.000000'),
+(3, 's3', 'computer desk', '10969.00', '2.00', 20, 'a', 1, '2021-04-09 16:39:40.000000', '2021-04-11 12:33:35.000000'),
+(4, 's4', 'hutch desks', '4899.00', '3.05', 30, 'abc', 1, '2021-04-09 19:02:37.000000', '2021-04-10 12:09:00.000000'),
+(5, 's5', '3 seater sofas', '41324.00', '2.00', 30, 'ads', 1, '2021-04-08 14:02:41.000000', '2021-04-10 09:00:16.000000'),
+(6, 's6', 'sofa bed', '48989.00', '1.00', 40, 'abc', 1, '2021-04-08 20:46:27.000000', '2021-04-10 06:48:16.000000'),
+(7, 's7', '3 door wardrobe', '11156.00', '1.05', 20, 'abc', 1, '2021-04-09 12:47:37.000000', '2021-04-10 11:43:05.000000'),
+(8, 's8', '6 seater dining table', '32699.00', '3.00', 20, 'abc', 1, '2021-04-07 16:24:14.000000', '2021-04-07 16:24:14.000000'),
+(9, 's9', 'writing table', '7499.00', '1.00', 40, 'abc', 1, '2021-04-09 19:04:18.000000', '2021-04-09 19:04:18.000000'),
+(11, 's1', 'sofa', '8999.00', '2.05', 50, 'abc', 1, '2021-04-08 15:39:48.000000', '2021-04-08 15:39:48.000000'),
+(15, 's14', '4 beds', '20000.00', '2.01', 50, 'abc', 1, '2021-04-09 18:35:48.000000', '2021-04-09 18:35:48.000000'),
+(17, 's15', 'almari', '4599.00', '1.55', 80, 'abc', 1, '2021-04-09 18:40:37.000000', '2021-04-09 18:40:37.000000');
 
 -- --------------------------------------------------------
 
@@ -488,11 +506,17 @@ INSERT INTO `product` (`productId`, `sku`, `name`, `price`, `discount`, `quantit
 --
 
 CREATE TABLE `product_attribute` (
-  `attributeId` int(11) NOT NULL,
+  `entityId` int(11) NOT NULL,
   `productId` int(11) NOT NULL,
-  `attributeOptionId` int(11) NOT NULL,
-  `name` varchar(32) NOT NULL
+  `attributeOptionId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `product_attribute`
+--
+
+INSERT INTO `product_attribute` (`entityId`, `productId`, `attributeOptionId`) VALUES
+(1, 2, 8);
 
 -- --------------------------------------------------------
 
@@ -512,9 +536,6 @@ CREATE TABLE `product_group_price` (
 --
 
 INSERT INTO `product_group_price` (`entityId`, `productId`, `CustomerGroupId`, `price`) VALUES
-(1, 1, 1, '10000.00'),
-(2, 1, 2, '9000.00'),
-(3, 1, 3, '8500.00'),
 (4, 2, 1, '6000.00'),
 (5, 2, 2, '5000.00'),
 (6, 2, 3, '4500.00'),
@@ -543,8 +564,8 @@ CREATE TABLE `product_media` (
 --
 
 INSERT INTO `product_media` (`imageId`, `productId`, `image`, `label`, `small`, `thumb`, `base`, `gallary`) VALUES
-(1, 1, '1.jpg', '', 1, 0, 0, 1),
-(2, 1, '2.jpg', '', 0, 1, 0, 1);
+(4, 3, '7.jpg', '', 1, 0, 0, 0),
+(18, 3, '5.jpg', '', 0, 0, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -569,8 +590,7 @@ CREATE TABLE `shipping` (
 INSERT INTO `shipping` (`shippingId`, `name`, `code`, `amount`, `description`, `status`, `createddate`) VALUES
 (1, 'AIR', '123', '100.00', 'a', 1, '0000-00-00 00:00:00.000000'),
 (2, 'FEDEX', '789', '70.00', 'a', 1, '0000-00-00 00:00:00.000000'),
-(3, 'RAIL', '456', '60.00', 'abc', 1, '0000-00-00 00:00:00.000000'),
-(4, 'DHL', '6464', '30.00', 'abv', 1, '0000-00-00 00:00:00.000000');
+(3, 'RAIL', '456', '60.00', 'abc', 1, '0000-00-00 00:00:00.000000');
 
 --
 -- Indexes for dumped tables
@@ -642,7 +662,7 @@ ALTER TABLE `config`
 -- Indexes for table `config_group`
 --
 ALTER TABLE `config_group`
-  ADD PRIMARY KEY (`entityId`),
+  ADD PRIMARY KEY (`groupId`),
   ADD KEY `groupId` (`groupId`);
 
 --
@@ -699,6 +719,7 @@ ALTER TABLE `product`
 -- Indexes for table `product_attribute`
 --
 ALTER TABLE `product_attribute`
+  ADD PRIMARY KEY (`entityId`),
   ADD KEY `productId` (`productId`);
 
 --
@@ -729,37 +750,37 @@ ALTER TABLE `shipping`
 -- AUTO_INCREMENT for table `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `adminId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `adminId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `attribute`
 --
 ALTER TABLE `attribute`
-  MODIFY `attributeId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `attributeId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `attribute_option`
 --
 ALTER TABLE `attribute_option`
-  MODIFY `optionId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `optionId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `cartId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `cartId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `cart_address`
 --
 ALTER TABLE `cart_address`
-  MODIFY `cartAddressId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `cartAddressId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `cart_item`
 --
 ALTER TABLE `cart_item`
-  MODIFY `itemId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `itemId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `category`
@@ -771,25 +792,25 @@ ALTER TABLE `category`
 -- AUTO_INCREMENT for table `cms_page`
 --
 ALTER TABLE `cms_page`
-  MODIFY `pageId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `pageId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `config`
 --
 ALTER TABLE `config`
-  MODIFY `configId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `configId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `config_group`
 --
 ALTER TABLE `config_group`
-  MODIFY `entityId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `groupId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `customerId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `customerId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `customer_address`
@@ -801,37 +822,43 @@ ALTER TABLE `customer_address`
 -- AUTO_INCREMENT for table `customer_group`
 --
 ALTER TABLE `customer_group`
-  MODIFY `groupId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `groupId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `orderaddress`
 --
 ALTER TABLE `orderaddress`
-  MODIFY `orderAddressId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `orderAddressId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `orderitem`
 --
 ALTER TABLE `orderitem`
-  MODIFY `itemId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `itemId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `ordertable`
 --
 ALTER TABLE `ordertable`
-  MODIFY `orderId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `orderId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `payment`
 --
 ALTER TABLE `payment`
-  MODIFY `paymentId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `paymentId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `productId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `productId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+
+--
+-- AUTO_INCREMENT for table `product_attribute`
+--
+ALTER TABLE `product_attribute`
+  MODIFY `entityId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `product_group_price`
@@ -843,7 +870,7 @@ ALTER TABLE `product_group_price`
 -- AUTO_INCREMENT for table `product_media`
 --
 ALTER TABLE `product_media`
-  MODIFY `imageId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `imageId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `shipping`
@@ -874,12 +901,6 @@ ALTER TABLE `cart_address`
 ALTER TABLE `cart_item`
   ADD CONSTRAINT `cart_item_ibfk_1` FOREIGN KEY (`cartId`) REFERENCES `cart` (`cartId`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `cart_item_ibfk_2` FOREIGN KEY (`productId`) REFERENCES `product` (`productId`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `config_group`
---
-ALTER TABLE `config_group`
-  ADD CONSTRAINT `config_group_ibfk_1` FOREIGN KEY (`groupId`) REFERENCES `config` (`groupId`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `customer_address`

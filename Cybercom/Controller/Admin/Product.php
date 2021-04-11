@@ -31,7 +31,7 @@ namespace Controller\Admin;
         {
             try 
             {
-                $edit = \Mage::getBlock('Admin\Product\Edit\Tabs\Form');
+                $edit = \Mage::getBlock('Admin\Product\Edit');
                 
                 $product = \Mage::getModel('Product');
                 if($productId = (int) $this->getRequest()->getGet('productId'))
@@ -48,6 +48,7 @@ namespace Controller\Admin;
                 $leftBar = \Mage::getBlock('Admin\Product\Edit\Tabs')->toHtml(); 
 
                 $response = [
+                    'status' => 'success',
                     'element' => [
                         [
                             'selector' => '#contentHtml',
@@ -66,7 +67,6 @@ namespace Controller\Admin;
             } catch (\Exception $e) {
                 $this->getMessage()->setFailure($e->getMessage());
             }
-            $this->redirect('grid',null,null,true);
         }
         public function saveAction()
         {
@@ -88,14 +88,18 @@ namespace Controller\Admin;
                     }
                 }
                 $productData = $this->getRequest()->getPost('product');
-                $product->createddate = date("Y-m-d H:i:s");
+                if(!$product)
+                {
+
+                    $product->createddate = date("Y-m-d H:i:s");
+                }
                 $product->setData($productData);
                 $product->save();
-                $this->getMessage()->setSuccess('Record Successfully Save.');
+
             } catch (\Exception $e) {
                 $this->getMessage()->setFailure($e->getMessage());
-           }
-           $this->redirect('grid',null,null,true);
+            }
+            $this->redirect('grid',null,null,true);
         }
         public function deleteAction()
         {
@@ -107,17 +111,19 @@ namespace Controller\Admin;
                     $this->getMessage()->setFailure('Id Not Found.');
                }
                $product = \Mage::getModel('Product');
-               if($product->delete($productId))
-               {
-                    $this->getMessage()->setSuccess('Record Successful Deleted.');
-               }
-               else{
-                    $this->getMessage()->setFailure('Unable to Delete Record');
-               }
+               $product->delete($productId);
+            //    if($product->delete($productId))
+            //    {
+            //         $this->getMessage()->setSuccess('Record Successful Deleted.');
+            //    }
+            //    else{
+            //         $this->getMessage()->setFailure('Unable to Delete Record');
+            //    }
+        
             } catch (\Exception $e) {
                 $this->getMessage()->setFailure($e->getMessage());
             }
-            $this->redirect('grid', null, null, true);
+            $this->gridAction();
         }
         
         public function statusAction()
@@ -140,31 +146,29 @@ namespace Controller\Admin;
                     $product->status = 1;
                 }
                 $product->save();
+                
 
            } catch (\Exception $e) {
                 $this->getMessage()->setFailure($e->getMessage());
            }
-           $this->redirect('grid', null, null, true);
         }
 
         public function filterAction()
         {
-            $filters = $this->getRequest()->getPost('filter');
-
-            $filter = \Mage::getModel('Core\Filter');
-            $filter->setFilters($filters);
+            try 
+            {
+                $filters = $this->getRequest()->getPost('filter');
             
-            $this->redirect('grid', null, null, true);
+                $filter = \Mage::getModel('Core\Filter');
+                $filter->setFilters($filters);
+
+            } catch (\Exception $e) {
+                $this->getMessage()->setFailure($e->getMessage());
+            }
+            $this->gridAction();
+            
 
         }
-
-        public function updateAction()
-        {
-            $attributeData = $this->getRequest()->getPost();
-            echo "<pre>";
-            print_r($attributeData);
-        }
-
-       
+  
     }
 ?>

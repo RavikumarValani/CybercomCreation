@@ -65,7 +65,7 @@ namespace Block\Admin\Shipping;
             $this->addActions('delete', [
                 'label' => 'Delete',
                 'method' => 'getDeleteUrl',
-                'ajax' => false,
+                'ajax' => true,
                 'class' => 'danger'
             ]);
             return $this;
@@ -73,7 +73,8 @@ namespace Block\Admin\Shipping;
 
         public function getDeleteUrl($row)
         {
-            return $this->getUrl()->getUrl('delete', null, ['shippingId' => $row->shippingId]);
+            $url = $this->getUrl()->getUrl('delete', null, ['shippingId' => $row->shippingId]);
+            return "mage.setUrl('{$url}').resetParams().load()";
         }
 
         public function getTitle()
@@ -86,24 +87,26 @@ namespace Block\Admin\Shipping;
             $this->addButton('AddShipping', [
                 'label' => 'Add Shipping',
                 'method' => 'getAddUrl',
-                'ajax' => false
+                'ajax' => true
             ]);
             $this->addButton('Filter', [
                 'label' => 'Apply Filter',
                 'method' => 'getFilterUrl',
-                'ajax' => false
+                'ajax' => true
             ]);
             return $this;
         }
 
         public function getAddUrl()
         {
-            return $this->getUrl()->getUrl('form');
+            $url = $this->getUrl()->getUrl('form');
+            return "mage.setUrl('{$url}').resetParams().load()";
         }
 
         public function getFilterUrl()
         {
-            return $this->getUrl()->getUrl('filter');
+            $url = $this->getUrl()->getUrl('filter');
+            return "mage.setUrl('{$url}').resetParams().load()";
         }
     }
 

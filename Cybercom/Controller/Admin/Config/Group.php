@@ -7,64 +7,124 @@ namespace Controller\Admin\Config;
     {
         public function gridAction()
         {
-            $grid = \Mage::getBlock('Admin\Config\Group\Grid');
-            $config = \Mage::getModel('Config');
-            $configId = $this->getRequest()->getGet('configId');
-            $config->load($configId);
-            $grid->setConfig($config);
+            try 
+           {
+                $gridHtml = \Mage::getBlock('Admin\Config\Group\Grid')->toHtml();
+                $response = [
+                    'element' => [
+                        'selector' => '#contentHtml',
+                        'html' => $gridHtml
+                    ]
+                ];
+                header("Content-Type: application/json");
+                echo json_encode($response);
 
-            $layout = $this->getLayout();
-
-            $layout->getContent()->addChild($grid);
-
-            $this->toLayoutHtml();
+            } catch (\Exception $e) {
+                $this->getMessage()->setFailure($e->getMessage());
+            }
         }
 
-        public function updateAction()
+        public function formAction()
+        {
+            try 
+           {
+                $edit = \Mage::getBlock('Admin\Config\Group\Edit');
+                $configGroup = \Mage::getModel('Config\Group');
+
+                $groupId = (int) $this->getRequest()->getGet('groupId');
+
+                if($groupId)
+                {
+                    $configGroup->load($groupId);
+                    if(!$configGroup)
+                    {
+                        throw new \Exception("Data not found.");
+                        
+                    }
+                }
+                $edit->setTableRow($configGroup);
+
+                $editHtml = $edit->toHtml();
+                $leftBar = \Mage::getBlock('Admin\Config\Group\Edit\Tabs')->toHtml();
+                $response = [
+                    'element' => [
+                        'selector' => '#contentHtml',
+                        'html' => $editHtml
+                    ],
+                    [
+                        'selector' => '#tabContent',
+                        'html' => $leftBar
+                    ]
+                ];
+                header("Content-Type: application/json");
+                echo json_encode($response);
+
+            } catch (\Exception $e) {
+                $this->getMessage()->setFailure($e->getMessage());
+            }
+        }
+
+        public function saveAction()
         {
             
             try 
             {
-                $groupData = $this->getRequest()->getPost();
-
-                $configId = $this->getRequest()->getGet('configId');
-                $config = \Mage::getModel('Config');
-                $query = "SELECT groupId FROM `config` WHERE `configId` = '{$configId}' ";
-                $groupId = $config->fetchRow($query)->groupId;
-
-                if(array_key_exists('exit', $groupData))
+                if(!$this->getRequest()->isPost())
                 {
-                    foreach ($groupData['exist'] as $key => $value) {
-                        $groupModel = \Mage::getModel('config\group');
-                        $query = "SELECT * FROM `config_group` 
-                        WHERE groupId = '{$groupId}'";
-                        $groupModel->fetchRow($query);
-                        $groupModel->name = $value['name'];
-                        $groupModel->save();
-        
-                    }
+                    throw new \Exception("Invalid request.");
+                    
                 }
-                if(array_key_exists('new', $groupData))
+                $groupData = $this->getRequest()->getPost('configGroup');
+                $groupId = $this->getRequest()->getGet('groupId');
+
+                $configGroup = \Mage::getModel('Config\Group');
+                if($groupId)
                 {
-                    foreach ($groupData['new'] as $key => $value) {
-                        foreach($value as $key2 =>$data)
-                        {
-                            $newData[$key2][$key] = $data;    
-                        }
-                    }
-                    foreach ($newData as $key => $value) {
-                        $groupModel = \Mage::getModel('Config\Group');
-                        $groupModel->groupId = $groupId;
-                        $groupModel->createddate = date("Y-m-d H:i:s");
-                        $groupModel->setData($value);
-                        $groupModel->save();
-                    }
+                    $configGroup->load($groupId);
                 }
+                $configGroup->name = $groupData['name'];
+                $configGroup->createddate = date("Y-m-d H:i:s");
+                $configGroup->save();
+
+                
             } catch (\Exception $e) {
                 $this->getMessage()->setFailure($e->getMessage());
             }
+            $this->gridAction();
 
-            $this->redirect('grid');
+        }
+
+        public function deleteAction()
+        {
+            try 
+            {
+                $groupId = $this->getRequest()->getGet('groupId');
+                $configGroup = \Mage::getModel('Config\Group');
+                if(!$groupId)
+                {
+                    $this->getMessage()->setFailure('Id Not Found');
+                }
+                $configGroup->load($groupId);
+                if(!$configGroup)
+                {
+                    $this->getMessage()->setFailure('Data Not Found');
+                }
+                $configGroup->delete($groupId);
+                
+                $gridHtml = \Mage::getBlock('Admin\Config\Group\Grid')->toHtml();
+                $response = [
+                    'element' => [
+                        'selector' => '#contentHtml',
+                        'html' => $gridHtml
+                    ]
+                ];
+                header("Content-Type: application/json");
+                echo json_encode($response);
+
+            } catch (\Exception $e) {
+                $this->getMessage()->setFailure($e->getMessage());
+            }
+            $this->gridAction();
         }
     }
     

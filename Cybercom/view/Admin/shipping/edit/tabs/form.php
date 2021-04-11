@@ -2,7 +2,7 @@
     <div class="container">
         <h1 style="margin-bottom: 40px;"><?php echo $this->getTitle(); ?></h1>
     </div>
-    <form method="POST" action="<?php echo $this->getFormUrl(); ?>" id="shipping-form">
+    <form method="POST" action="<?php echo $this->getFormUrl(); ?>" id="shipping">
 
 <div class="row">
     <div class="col-md-6" style="margin-top: 20px;">
@@ -43,7 +43,7 @@
     </div>
     <div class="col-md-12" style="margin-top: 40px;text-align:center;">
         <div class="form-group">
-            <input type="submit" value="Save" class="btn btn-primary">
+            <button type="button" class="btn btn-primary" onclick="mage.setForm('#shipping').load()">Save</button>
         </div>
     </div>
 </div>

@@ -18,6 +18,16 @@ namespace Controller\Admin;
                 $this->getMessage()->setFailure($e->getMessage());
             }
         }
+
+        public function selectCustomerAction()
+        {
+            $customerData = $this->getRequest()->getPost('customer');
+            $customerId = $customerData['customerId'];
+            $session = \Mage::getModel('Admin\Session');
+            $session->customerId = $customerId;
+            $this->indexAction();
+            
+        }
     }
     
 ?>

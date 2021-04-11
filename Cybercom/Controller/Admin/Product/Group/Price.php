@@ -13,16 +13,24 @@ namespace Controller\Admin\Product\Group;
                 $prduct = \Mage::getModel('Product')->load($productId);
                 if(!$prduct)
                 {
-                    throw new \Exception("Record Not Found", 1);
+                    throw new \Exception("Record Not Found");
                     
                 }
                 $layout = $this->getLayout();
-                $groupPriceBlock = \Mage::getBlock('Admin\Product\Edit\Tabs\Group\Price')->setProduct($prduct);
-                $content = $layout->getContent()->addChild($groupPriceBlock);
-                $this->toLayoutHtml();
+                $groupPriceBlock = \Mage::getBlock('Admin\Product\Edit\Tabs\Group\Price');
+                $groupPriceBlock->setProduct($prduct);
+                $gridHtml = $groupPriceBlock->toHtml();
+                $response = [
+                    'element' => [
+                        'selector' => '#contentHtml',
+                        'html' => $gridHtml
+                    ]
+                ];
+                header("Content-Type: application/json");
+                echo json_encode($response);
                 
             } catch (\Exception $e) {
-                $this->getMessage()->setFailure();
+                $this->getMessage()->setFailure($e->getMessage());
             }
             
         }

@@ -9,7 +9,7 @@ namespace Model\Config;
         public function __construct()
         {
             $this->setTableName('config_group');
-            $this->setPrimaryKey('entityId');
+            $this->setPrimaryKey('groupId');
         }
     }
 ?>

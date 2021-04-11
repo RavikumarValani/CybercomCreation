@@ -60,7 +60,7 @@ namespace Block\Admin\Payment;
             $this->addActions('delete', [
                 'label' => 'Delete',
                 'method' => 'getDeleteUrl',
-                'ajax' => false,
+                'ajax' => true,
                 'class' => 'danger'
             ]);
             return $this;
@@ -68,7 +68,8 @@ namespace Block\Admin\Payment;
 
         public function getDeleteUrl($row)
         {
-            return $this->getUrl()->getUrl('delete', null, ['paymentId' => $row->paymentId]);
+            $url = $this->getUrl()->getUrl('delete', null, ['paymentId' => $row->paymentId]);
+            return "mage.setUrl('{$url}').resetParams().load()";
         }
 
         public function getTitle()
@@ -81,24 +82,26 @@ namespace Block\Admin\Payment;
             $this->addButton('AddPayment', [
                 'label' => 'Add Payment',
                 'method' => 'getAddUrl',
-                'ajax' => false
+                'ajax' => true
             ]);
             $this->addButton('Filter', [
                 'label' => 'Apply Filter',
                 'method' => 'getFilterUrl',
-                'ajax' => false
+                'ajax' => true
             ]);
             return $this;
         }
 
         public function getAddUrl()
         {
-            return $this->getUrl()->getUrl('form');
+            $url = $this->getUrl()->getUrl('form');
+            return "mage.setUrl('{$url}').resetParams().load()";
         }
 
         public function getFilterUrl()
         {
-            return $this->getUrl()->getUrl('filter');
+            $url = $this->getUrl()->getUrl('filter');
+            return "mage.setUrl('{$url}').resetParams().load()";
         }
     }
 

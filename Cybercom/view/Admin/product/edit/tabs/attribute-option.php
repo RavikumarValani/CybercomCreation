@@ -1,43 +1,33 @@
-<pre>
 <?php $attributes = $this->getAttributes(); ?>
-<?php $options = $this->getAttributeOptions(); ?>
-<form method="POST" action="<?php echo $this->getUrl()->getUrl('update'); ?>">
+<div class="col-md-8 p-5 border border-dark position-absolute top-50 start-50 translate-middle">
+    <div class="container">
+        <h1 style="margin-bottom: 40px;">Attribute</h1>
+    </div>
+    <form method="POST" id="pattribute" action="<?php echo $this->getUrl()->getUrl('save', 'Product\Attribute') ?>" enctype="multipart/form-data">
+    <table border="1" class="table table-success table-striped ">
+        <?php if(!$attributes): ?>
+            <tr>
+                <td colspan="2">Record not found.</td>
+            </tr>
+        <?php else: ?>
+            <?php foreach ($attributes->getData() as $key => $attribute): ?>
+                <tr>
+                    <td><?php echo $attribute->name ?><td>
+                    <td>
+                <?php if($attribute->getOptions()): ?>
+                        <?php if($attribute->inputType == 'select'): ?>
+                                <select name="attribute[attributeOptionId]">
+                                <?php foreach ($attribute->getOptions()->getData() as $key => $option): ?>
+                                    <option value="<?php echo $option->optionId ?>"><?php echo $option->name ?></option>
+                                <?php endforeach; ?>
+                                </select>
+                        <?php endif; ?>
+                <?php endif; ?></td>
 
-    <input class="btn btn-primary" type="submit" value="Update">
-    <input class="btn btn-success" type="button" value="Add Option" onclick="addRow(this)">
-
-    <table class="table table-success table-striped " id="existingOption" width="100%">
-
-        <?php foreach ($options->getData() as $key => $option): ?>
-        <tr>
-            <td><input type="text" name="exist[<?php echo $option->optionId ?>][name]"
-                    value="<?php echo $option->name ?>"></td>
-            <td><input type="text" name="exist[<?php echo $option->optionId ?>][sortOrder]"
-                    value="<?php echo $option->sortOrder ?>"></td>
-            <td><input type="button" value="Remove Option" class="removeRow"></td>
-        </tr>
-
-        <?php endforeach; ?>
+                </tr>
+            <?php endforeach; ?>
+        <?php endif; ?>
     </table>
-</form>
-<div style="display: none;">
-
-    <table id="newOptionRow" class="table table-success table-striped " width="100%">
-        <tr>
-            <td><input type="text" name="new[name][]"></td>
-            <td><input type="text" name="new[sortOrder][]"></td>
-            <td><input type="button" value="Remove Option" class="removeRow"></td>
-        </tr>
-    </table>
+    <button type="button" class="btn btn-success" onclick="mage.setForm('#pattribute').load()">Save</button>  
+    </form>
 </div>
-
-<script type="text/javascript">
-$("#existingOption").on('click', '.removeRow', function() {
-    $(this).closest('tr').remove();
-});
-
-function addRow(e) {
-    var row = $("#newOptionRow tr").clone();
-    $("#existingOption").append(row);
-}
-</script>

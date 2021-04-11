@@ -1,17 +1,17 @@
 <?php
-namespace Block\Admin\Config;
+namespace Block\Admin\Config\Group;
 
     \Mage::loadFileByClassName("Block\Core\Edit");
 
     class Edit extends \Block\Core\Edit
     {
-        protected $attribute = null;
 
         public function __construct()
         {
             parent::__construct();
-            $this->setTemplate('./view/core/edit.php');
+            $this->setTabClass(\Mage::getBlock('Admin\Config\Group\Edit\Tabs'));
         }
+
         
        
     }

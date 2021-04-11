@@ -64,33 +64,33 @@ namespace Controller\Admin;
                 $admin->createddate = date("Y-m-d H:i:s");
                 $admin->setData($adminData);
                 $admin->save();
-                $this->getMessage()->setSuccess('Record Save Successful.');
+                
             }catch (\Exception $e) {
                 $this->getMessage()->setFailure($e->getMessage());
             }
-            $this->redirect('grid',null,null,true);
+            $this->gridAction();
         }
         public function deleteAction()
         {
             try 
             {
-                if($this->getRequest()->isPost())
+                $adminId = $this->getRequest()->getGet('adminId');
+                if(!$adminId)
                 {
-                    $this->getMessage()->setFailure('Unable To Delete Record.');
+                    $this->getMessage()->setFailure("Id not found.");
                 }
-                $id = $this->getRequest()->getGet('adminId');
-                $admin = \Mage::getController('Model\Admin');
-                if ($admin->delete($id)) {
-                    $this->getMessage()->setSuccess('Record Delete Successful.');
-                }
-                else
+                $admin = \Mage::getModel('Admin');
+                $admin->load($adminId);
+                if(!$admin)
                 {
-                    $this->getMessage()->setFailure('Unable to Delete Record.');
+                    $this->getMessage()->setFailure("Data not found.");
                 }
+                $admin->delete($adminId);
+                
             } catch (\Exception $e) {
                 $this->getMessage()->setFailure($e->getMessage());
             }
-            $this->redirect('grid');
+            $this->gridAction();
         }
 
         public function statusAction()
@@ -113,21 +113,35 @@ namespace Controller\Admin;
                     $admin->status = 1;
                 }
                 $admin->save();
+                $gridHtml = \Mage::getBlock('Admin\Grid')->toHtml();
+                $response = [
+                    'element' => [
+                        'selector' => '#contentHtml',
+                        'html' => $gridHtml
+                    ]
+                ];
+                header("Content-Type: application/json");
+                echo json_encode($response);
 
            } catch (\Exception $e) {
                 $this->getMessage()->setFailure($e->getMessage());
            }
-           $this->redirect('grid', null, null, true);
         }
 
         public function filterAction()
         {
-            $filters = $this->getRequest()->getPost('filter');
-
-            $filter = \Mage::getModel('Core\Filter');
-            $filter->setFilters($filters);
+            try 
+            {
+                $filters = $this->getRequest()->getPost('filter');
             
-            $this->redirect('grid', null, null, true);
+                $filter = \Mage::getModel('Core\Filter');
+                $filter->setFilters($filters);
+
+            } catch (\Exception $e) {
+                $this->getMessage()->setFailure($e->getMessage());
+            }
+            $this->gridAction();
+            
 
         }
     }

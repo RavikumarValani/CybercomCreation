@@ -19,7 +19,7 @@ namespace Controller\Admin;
                 ];
                 header("Content-Type: application/json");
                 echo json_encode($response);
-
+                
             } catch (\Exception $e) {
                 $this->getMessage()->setFailure($e->getMessage());
             }
@@ -30,6 +30,18 @@ namespace Controller\Admin;
             try 
             {
                 $edit = \Mage::getBlock('Admin\Customer\Edit');
+                $customer = \Mage::getModel('Customer'); 
+                if($customerId = (int) $this->getRequest()->getGet('customerId'))
+                {
+                    $customer->load($customerId);
+                    if(!$customer)
+                    {
+                        $this->getMessage()->setFailure('Unable To Process Data.');  
+                    }
+                }
+                
+                $edit->setTableRow($customer);
+
                 $editHtml = $edit->toHtml();
                 $leftBar = \Mage::getBlock('Admin\Customer\Edit\Tabs')->toHtml(); 
 
@@ -48,22 +60,9 @@ namespace Controller\Admin;
                 header("Content-Type: application/json");
                 echo json_encode($response);
 
-                $customer = \Mage::getModel('Customer'); 
-                if($customerId = (int) $this->getRequest()->getGet('customerId'))
-                {
-                    $customer->load($customerId);
-                    if(!$customer)
-                    {
-                        $this->getMessage()->setFailure('Unable To Process Data.');  
-                    }
-                }
-                
-                $edit->setTableRow($customer);
-                $this->tolayoutHtml();
             } catch (\Exception $e) {
                 $this->getMessage()->setFailure($e->getMessage());
             }
-            $this->redirect('grid');
         }
 
         public function saveAction()
@@ -91,31 +90,34 @@ namespace Controller\Admin;
                 $customer->createddate = date("Y-m-d H:i:s");
                 $customer->save();
 
-                $this->getMessage()->setSuccess('Record Save Successful.');
+                
             } catch (\Exception $e) {
                 $this->getMessage()->setFailure($e->getMessage());
             }
-            $this->redirect('grid');
+            $this->gridAction();
         }
         public function deleteAction()
         {
             try 
             {
-                $id = $this->getRequest()->getGet('id');
+                $customerId = $this->getRequest()->getGet('customerId');
                 $customer = \Mage::getModel('Customer');
-                if($customer->delete($id))
+                if(!$customerId)
                 {
-                    $this->getMessage()->setSuccess('Record Delete Successful.');
+                    $this->getMessage()->setFailure('Id not found.');
                 }
-                else
+                $customer->load($customerId);
+                if(!$customer)
                 {
-                    $this->getMessage()->setFailure('Unable To Delete Record.');
+                    $this->getMessage()->setFailure('Data not found.');
                 }
+                $customer->delete($customerId);
+               
                 
             } catch (\Exception $e) {
                 $this->getMessage()->setFailure($e->getMessage());
-            }
-            $this->redirect('grid');   
+            }  
+            $this->gridAction();
         }
 
         public function statusAction()
@@ -142,7 +144,7 @@ namespace Controller\Admin;
             } catch (\Exception $e) {
                 $this->getMessage()->setFailure($e->getMessage());
             }
-            $this->redirect('grid', null, null, true);
+            $this->gridAction();
         }
 
         public function filterAction()
@@ -158,7 +160,7 @@ namespace Controller\Admin;
             } catch (\Exception $e) {
                 $this->getMessage()->setFailure($e->getMessage());
             }
-            $this->redirect('grid', null, null, true);
+            $this->gridAction();
         }
     }
 ?>

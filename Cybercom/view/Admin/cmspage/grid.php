@@ -1,7 +1,7 @@
 <?php $pageData = $this->getPageData();?>
 <?php $color = ['danger', 'primary'];  ?>
 <table class="table table-success table-striped  top-50 start-50 ">
-<a class="btn btn-success mb-4 p-2" href="<?php echo $this->getUrl()->getUrl('form') ?>" >Add Page</a>
+<a class="btn btn-success mb-4 p-2" onclick="mage.setUrl('<?php echo $this->getUrl()->getUrl('form') ?>').load()" >Add Page</a>
 
     <tr>
         <th scope="col">Page Id</th>
@@ -22,11 +22,11 @@
         <td><?php echo $value->title; ?></td>
         <td><?php echo $value->identifier; ?></td>
         <td><?php echo $value->content; ?></td>
-        <td><a class="btn btn-<?php echo $color[$value->status] ?>" href="<?php echo $this->getUrl()->getUrl('status', null,['pageId' => $value->pageId]); ?>"> <?php echo $value->getStatusOption()[$value->status] ?> </a></td>
+        <td><a class="btn btn-<?php echo $color[$value->status] ?>" onclick="mage.setUrl('<?php echo $this->getUrl()->getUrl('status', null,['pageId' => $value->pageId]); ?>').load()"> <?php echo $value->getStatusOption()[$value->status] ?> </a></td>
 
         <td>
-            <button><a href="<?php echo $this->getUrl()->getUrl('form',null,['pageId'=>$value->pageId]); ?>">Edit</a></button>
-            <button><a href="<?php echo $this->getUrl()->getUrl('delete',null,['pageId'=>$value->pageId]); ?>">Delete</a></button>
+            <button><a onclick="mage.setUrl('<?php echo $this->getUrl()->getUrl('form',null,['pageId'=>$value->pageId]); ?>').load()">Edit</a></button>
+            <button><a onclick="mage.setUrl('<?php echo $this->getUrl()->getUrl('delete',null,['pageId'=>$value->pageId]); ?>').load()">Delete</a></button>
         </td>
     </tr>
 

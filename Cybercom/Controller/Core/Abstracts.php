@@ -60,7 +60,7 @@ namespace Controller\Core;
         public function redirect($actionName=null,$controllerName=null,$params=null,$resetParams=false)
         {
             header("location: ".$this->getUrl($actionName,$controllerName,$params,$resetParams));
-            exit(0);
+            exit();
         }
 
         public function getUrl($actionName=null,$controllerName=null,$params=null,$resetParams=false)

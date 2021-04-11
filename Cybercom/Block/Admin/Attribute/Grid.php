@@ -85,19 +85,19 @@ namespace Block\Admin\Attribute;
             $this->addActions('edit', [
                 'label' => 'Edit',
                 'method' => 'getEditUrl',
-                'ajax' => false,
+                'ajax' => true,
                 'class' => 'primary'
             ]);
             $this->addActions('delete', [
                 'label' => 'Delete',
                 'method' => 'getDeleteUrl',
-                'ajax' => false,
+                'ajax' => true,
                 'class' => 'danger'
             ]);
             $this->addActions('Option', [
                 'label' => 'Option',
                 'method' => 'getOptionUrl',
-                'ajax' => false,
+                'ajax' => true,
                 'class' => 'primary'
             ]);
             return $this;
@@ -105,17 +105,20 @@ namespace Block\Admin\Attribute;
 
         public function getEditurl($row)
         {
-            return $this->getUrl()->getUrl('form', null, ['attributeId' => $row->attributeId]);
+            $url = $this->getUrl()->getUrl('form', null, ['attributeId' => $row->attributeId]);
+            return "mage.setUrl('{$url}').resetParams().load()";
         }
 
         public function getDeleteUrl($row)
         {
-            return $this->getUrl()->getUrl('delete', null, ['attributeId' => $row->attributeId]);
+            $url = $this->getUrl()->getUrl('delete', null, ['attributeId' => $row->attributeId]);
+            return "mage.setUrl('{$url}').resetParams().load()";
         }
 
         public function getOptionUrl($row)
         {
-            return $this->getUrl()->getUrl('options',null,['attributeId' => $row->attributeId]);
+            $url = $this->getUrl()->getUrl('grid','Attribute\Option',['attributeId' => $row->attributeId]);
+            return "mage.setUrl('{$url}').resetParams().load()";
         }
 
         public function getTitle()
@@ -133,19 +136,21 @@ namespace Block\Admin\Attribute;
             $this->addButton('Filter', [
                 'label' => 'Apply Filter',
                 'method' => 'getFilterUrl',
-                'ajax' => false
+                'ajax' => true
             ]);
             return $this;
         }
 
         public function getAddUrl()
         {
-            return 'mage.setUrl("<?php echo $this->getUrl()->getUrl("form"); ?>").load();" href="javascript:void(0);"';
+            $url = $this->getUrl()->getUrl("form"); 
+            return "mage.setUrl('{$url}').load()";
         }
 
         public function getFilterUrl()
         {
-            return $this->getUrl()->getUrl('filter');
+            $url = $this->getUrl()->getUrl('filter');
+            return "mage.setUrl('{$url}').load()";
         }
     }
 

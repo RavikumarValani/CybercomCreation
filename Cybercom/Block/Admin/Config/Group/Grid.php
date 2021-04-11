@@ -1,24 +1,126 @@
 <?php
 namespace Block\Admin\Config\Group;
 
-    \Mage::loadFileByClassName('Block\Core\Template');
+    \Mage::loadFileByClassName('Block\Core\Grid');
 
-    class Grid extends \Block\Core\Template
+    class Grid extends \Block\Core\Grid
     {
-        protected $config = [];
-
-        public function __construct() {
-            $this->setTemplate('./view/admin/config/group/grid.php');
-        }
-
-        public function setConfig(\Model\Config $config)
+        public function __construct()
         {
-            $this->config = $config;
+            parent::__construct();
+            $this->setTemplate('./view/core/grid.php');
+        }   
+
+        public function prepareCollection()
+        {
+            $configGroup = \Mage::getModel('config\group');
+            $query = "SELECT * FROM `{$configGroup->getTableName()}` ";
+
+            if($this->getFilter()->hasFilters())
+            {
+                $query .= " WHERE 1=1";
+                foreach($this->getFilter()->getFilters() as $type => $filters)
+                {
+                    if($type == $this->getFilter()->getType()[$type])
+                    {
+                        foreach($filters as $key => $value)
+                        {
+                            $query .= " AND `{$key}` LIKE '%{$value}%'";
+                        }
+                    }
+                }
+            }
+            $collection = $configGroup->fetchAll($query);
+            $this->setCollection($collection);
             return $this;
         }
-        public function getConfig()
+
+        public function prepareColumns()
         {
-            return $this->config;
+            $this->addColumns('groupId',[
+                'field' => 'groupId',
+                'label' => 'Group Id',
+                'type' => 'number'
+            ]);
+            $this->addColumns('name',[
+                'field' => 'name',
+                'label' => 'Group Name',
+                'type' => 'text'
+            ]);
+            return $this;
+        }
+
+        public function prepareAction()
+        {
+            $this->addActions('edit', [
+                'label' => 'Edit',
+                'method' => 'getEditUrl',
+                'ajax' => true,
+                'class' => 'primary'
+            ]);
+            $this->addActions('delete', [
+                'label' => 'Delete',
+                'method' => 'getDeleteUrl',
+                'ajax' => true,
+                'class' => 'danger'
+            ]);
+            $this->addActions('Config', [
+                'label' => 'Config',
+                'method' => 'getConfigUrl',
+                'ajax' => true,
+                'class' => 'primary'
+            ]);
+            return $this;
+        }
+
+        public function getEditurl($row)
+        {
+            $url = $this->getUrl()->getUrl('form', null, ['groupId' => $row->groupId]);
+            return "mage.setUrl('{$url}').resetParams().load()";
+        }
+
+        public function getDeleteUrl($row)
+        {
+            $url = $this->getUrl()->getUrl('delete', null, ['groupId' => $row->groupId]);
+            return "mage.setUrl('{$url}').resetParams().load()";
+        }
+
+        public function getConfigUrl($row)
+        {
+            $url = $this->getUrl()->getUrl('grid','config',['groupId' => $row->groupId]);
+            return "mage.setUrl('{$url}').resetParams().load()";
+        }
+
+        public function getTitle()
+        {
+            return 'Manage Config Group';
+        }
+
+        public function prepareButton()
+        {
+            $this->addButton('AddConfigGroup', [
+                'label' => 'Add ConfigGroup',
+                'method' => 'getAddUrl',
+                'ajax' => true
+            ]);
+            $this->addButton('Filter', [
+                'label' => 'Apply Filter',
+                'method' => 'getFilterUrl',
+                'ajax' => true
+            ]);
+            return $this;
+        }
+
+        public function getAddUrl()
+        {
+            $url = $this->getUrl()->getUrl("form"); 
+            return "mage.setUrl('{$url}').load()";
+        }
+
+        public function getFilterUrl()
+        {
+            $url = $this->getUrl()->getUrl('filter');
+            return "mage.setUrl('{$url}').load()";
         }
     }
     

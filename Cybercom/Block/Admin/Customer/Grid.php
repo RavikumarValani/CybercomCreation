@@ -94,13 +94,13 @@ namespace Block\Admin\Customer;
             $this->addActions('edit', [
                 'label' => 'Edit',
                 'method' => 'getEditUrl',
-                'ajax' => false,
+                'ajax' => true,
                 'class' => 'primary'
             ]);
             $this->addActions('delete', [
                 'label' => 'Delete',
                 'method' => 'getDeleteUrl',
-                'ajax' => false,
+                'ajax' => true,
                 'class' => 'danger'
             ]);
             return $this;
@@ -108,12 +108,14 @@ namespace Block\Admin\Customer;
 
         public function getEditurl($row)
         {
-            return $this->getUrl()->getUrl('form', null, ['customerId' => $row->customerId]);
+            $url = $this->getUrl()->getUrl('form', null, ['customerId' => $row->customerId]);
+            return "mage.setUrl('{$url}').resetParams().load()";
         }
 
         public function getDeleteUrl($row)
         {
-            return $this->getUrl()->getUrl('delete', null, ['customerId' => $row->customerId]);
+            $url = $this->getUrl()->getUrl('delete', null, ['customerId' => $row->customerId]);
+            return "mage.setUrl('{$url}').resetParams().load()";
         }
 
         public function getTitle()
@@ -126,24 +128,26 @@ namespace Block\Admin\Customer;
             $this->addButton('AddCustomer', [
                 'label' => 'Add Customer',
                 'method' => 'getAddUrl',
-                'ajax' => false
+                'ajax' => true
             ]);
             $this->addButton('Filter', [
                 'label' => 'Apply Filter',
                 'method' => 'getFilterUrl',
-                'ajax' => false
+                'ajax' => true
             ]);
             return $this;
         }
 
         public function getAddUrl()
         {
-            return $this->getUrl()->getUrl('form');
+            $url = $this->getUrl()->getUrl('form');
+            return "mage.setUrl('{$url}').load()";
         }
 
         public function getFilterUrl()
         {
-            return $this->getUrl()->getUrl('filter');
+            $url = $this->getUrl()->getUrl('filter');
+            return "mage.setUrl('{$url}').load()";
         }
 
     }       

@@ -9,6 +9,7 @@ namespace Block\Admin\Cart;
 
         public function __construct()
         {
+            parent::__construct();
             $this->setTemplate('./view/admin/cart/grid.php');
         }
 

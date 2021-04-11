@@ -1,3 +1,16 @@
+<?php $customers = $this->getCustomers();  ?>
+<form method="POST" id="customer" action="">
+<select name="customer[customerId]" required="" class="form-control selectpicker" tabindex="-98">
+    <option value="">Select..</option>
+    <?php foreach ($customers->getData() as $key => $customer) : ?>
+    <option value="<?php echo $customer->customerId ?>"  >
+        <?php echo $customer->firstname ?> </option>
+        
+    <?php echo $customer->customerId; ?>
+    <?php endforeach; ?>
+</select>
+<button type="submit" onclick="mage.setForm('#customer').setUrl('<?php echo $this->getUrl()->getUrl('selectCustomer', 'index'); ?>').load()">Go</button>
+</form>
 <div id="carouselExampleCaptions" class="carousel slide  " data-bs-ride="carousel" style="margin-top: 0px;">
     <div class="carousel-indicators">
         <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"
@@ -9,7 +22,7 @@
     </div>
     <div class="carousel-inner">
         <div class="carousel-item active">
-            <img src="./view/index/image/1.jpg" class="d-block w-100%" style="padding-top: 0px;" alt="...">
+            <img src="./view/admin/index/image/1.jpg" class="d-block w-100%" style="padding-top: 0px;" alt="...">
             <div class="carousel-caption d-none d-md-block">
                 <h3>WELCOME TO myShop</h3>
                 <p>What you want,myShop give it</p>
@@ -19,7 +32,7 @@
             </div>
         </div>
         <div class="carousel-item">
-            <img src="./view/index/image/2.jpg" class="d-block w-100" alt="...">
+            <img src="./view/admin/index/image/2.jpg" class="d-block w-100" alt="...">
             <div class="carousel-caption d-none d-md-block">
                 <h5>Best Dealer for you</h5>
                 <p>What you want,myShop give it</p>
@@ -29,7 +42,7 @@
             </div>
         </div>
         <div class="carousel-item">
-            <img src="./view/index/image/3.jpg" class="d-block w-100" alt="...">
+            <img src="./view/admin/index/image/3.jpg" class="d-block w-100" alt="...">
             <div class="carousel-caption d-none d-md-block">
                 <h5>Best Dealer for you</h5>
                 <p>What you want,myShop give it</p>

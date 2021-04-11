@@ -3,7 +3,7 @@
     <div class="container">
         <h1 style="margin-bottom: 40px;"><?php echo $this->getHeading(); ?></h1>
     </div>
-    <form method="POST" action="<?php echo $this->getFormUrl(); ?>" id="attribute-form">
+    <form method="POST" action="<?php echo $this->getFormUrl(); ?>" id="attribute">
         <div class="col-md-4" style="margin-top: 20px;">
             <div class="form-group">
                 <label><strong>Entity Type *</strong> </label>
@@ -73,7 +73,8 @@
 
         <div class="col-md-12" style="margin-top: 40px;text-align: center;">
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary">
+            <button type="button" class="btn btn-primary" onclick="mage.setForm('#attribute').load()">Save</button>
+
             </div>
         </div>
     </form>

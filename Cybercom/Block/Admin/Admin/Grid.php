@@ -61,7 +61,7 @@ namespace Block\Admin\Admin;
             $this->addActions('delete', [
                 'label' => 'Delete',
                 'method' => 'getDeleteUrl',
-                'ajax' => false,
+                'ajax' => true,
                 'class' => 'danger'
             ]);
             return $this;
@@ -69,7 +69,8 @@ namespace Block\Admin\Admin;
 
         public function getDeleteUrl($row)
         {
-            return $this->getUrl()->getUrl('delete', null, ['productId' => $row->productId]);
+            $url = $this->getUrl()->getUrl('delete', null, ['adminId' => $row->adminId]);
+            return "mage.setUrl('{$url}').resetParams().load()";
         }
 
         public function getTitle()
@@ -82,24 +83,26 @@ namespace Block\Admin\Admin;
             $this->addButton('AddAdmin', [
                 'label' => 'Add Admin',
                 'method' => 'getAddUrl',
-                'ajax' => false
+                'ajax' => true
             ]);
             $this->addButton('Filter', [
                 'label' => 'Apply Filter',
                 'method' => 'getFilterUrl',
-                'ajax' => false
+                'ajax' => true
             ]);
             return $this;
         }
 
         public function getAddUrl()
         {
-            return $this->getUrl()->getUrl('form');
+            $url = $this->getUrl()->getUrl('form');
+            return "mage.setUrl('{$url}').load()";
         }
 
         public function getFilterUrl()
         {
-            return $this->getUrl()->getUrl('filter');
+            $url = $this->getUrl()->getUrl('filter');
+            return "mage.setUrl('{$url}').load()";
         }
     }
 

@@ -42,7 +42,6 @@ namespace Controller\Admin;
             } catch (\Exception $e) {
                 $this->getMessage()->setFailure($e->getMessage());
             }
-            $this->redirect('grid');
         }
         public function saveAction()
         {
@@ -61,26 +60,29 @@ namespace Controller\Admin;
             } catch (\Exception $e) {
                 $this->getMessage()->setFailure($e->getMessage());
             }
-            $this->redirect('grid');
+            $this->gridAction();
         }
        public function deleteAction()
        {
            try 
            {
-               $id = $this->getRequest()->getGet('paymentId');
-               $payment = \Mage::getModel('Payment');
-               if($payment->delete($id))
+                $paymentId = $this->getRequest()->getGet('paymentId');
+                $payment = \Mage::getModel('Payment');
+                if(!$paymentId)
                 {
-                    $this->getMessage()->setSuccess('Record Delete Successful.');
+                    $this->getMessage()->setFailure("Id not found.");
                 }
-                else
+                $payment->load($paymentId);
+                if(!$payment)
                 {
-                   $this->getMessage()->setFailure('Unable To Delete Record.');
+                    $this->getMessage()->setFailure("Data not found.");
                 }
+                $payment->delete($paymentId);
+                
             } catch (\Exception $e) {
                $this->getMessage()->setFailure($e->getMessage());
             }
-            $this->redirect('grid');
+            $this->gridAction();
 
         }
 
@@ -108,17 +110,21 @@ namespace Controller\Admin;
            } catch (\Exception $e) {
                 $this->getMessage()->setFailure($e->getMessage());
            }
-           $this->redirect('grid', null, null, true);
         }
 
         public function filterAction()
         {
-            $filters = $this->getRequest()->getPost('filter');
-
-            $filter = \Mage::getModel('Core\Filter');
-            $filter->setFilters($filters);
+            try 
+            {
+                $filters = $this->getRequest()->getPost('filter');
             
-            $this->redirect('grid', null, null, true);
+                $filter = \Mage::getModel('Core\Filter');
+                $filter->setFilters($filters);
+
+            } catch (\Exception $e) {
+                $this->getMessage()->setFailure($e->getMessage());
+            }
+            $this->gridAction();
 
         }
     }

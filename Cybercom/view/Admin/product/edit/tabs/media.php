@@ -5,8 +5,8 @@
     
 <form method="POST" action="<?php echo $this->getUrl()->getUrl('update', 'Product\Media'); ?>" id="media"> 
     
-    <button class="btn btn-primary" type="submit" name= "update">Update</button>    
-    <button type="button" class="btn btn-danger" onclick="removeImage()" >Remove</button>
+    <button class="btn btn-primary" type="button" name= "update" onclick="mage.setForm('#media').load()">Update</button>    
+    <button type="button" class="btn btn-danger" onclick="mage.setForm('#media').load()" >Remove</button>
     <table class="table table-success table-striped ">
         <tr>
             <th scope="col">ImageId</th>
@@ -53,9 +53,9 @@
 
     </table>
 </form>
-<form method="POST" action="<?php echo $this->getUrl()->geturl('upload', 'Product\Media'); ?>" id="product-media-form" enctype="multipart/form-data">
-    <input type="file" name="image" value="Upload Image"> <br><br>
-    <input type="submit" value="Upload" disabled>
+<form method="POST" action="<?php echo $this->getUrl()->geturl('upload', 'Product\Media'); ?>" id="product-media" enctype="multipart/form-data">
+    <input type="file" id="file" name="image" value="Upload Image"> <br><br>
+    <button type="button" id="upload" disabled onclick="mage.setForm('#product-media').uploadFile()" >Upload</button>
 </form>
 </div>
 
@@ -65,14 +65,11 @@ $(document).ready(
         $('input:file').change(
             function(){
                 if ($(this).val()) {
-                    $('input:submit').attr('disabled',false);
+                    $('#upload').attr('disabled',false);
                 } 
             }
             );
     });
-function removeImage() {
-    var form = document.getElementById('media');
-    form.setAttribute('Action', '<?php echo $this->getUrl()->getUrl('delete', 'Product\Media');?>');
-    form.submit();
-}
+
+
 </script>

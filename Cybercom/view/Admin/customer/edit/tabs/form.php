@@ -5,7 +5,7 @@
     <div class="container">
         <h1 style="margin-bottom: 40px;"><?php echo $this->getHeading(); ?></h1>
     </div>
-    <form class="row g-3" style="padding-top: 0px;" method="POST" action="<?php echo $this->getFormUrl(); ?>">
+    <form class="row g-3" style="padding-top: 0px;" method="POST" action="<?php echo $this->getFormUrl() ?>" id="customer">
 
         <div class="col-md-6" style="padding-top: 6px;">
             <div class="form-group">
@@ -62,7 +62,8 @@
             </div>
         </div>
         <div class="col-12" style="text-align: center;padding-top:40px;">
-            <input type="submit" class="btn btn-primary" value="Save">
+        <button type="button" class="btn btn-primary" onclick="mage.setForm('#customer').load()">Save</button>
+
         </div>
     </form>
 </div>

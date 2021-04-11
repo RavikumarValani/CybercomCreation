@@ -3,7 +3,7 @@
     <div class="container">
         <h1 style="margin-bottom: 40px;">Add data</h1>
     </div>
-    <form class="row g-3" style="padding-top: 0px;" method="POST"
+    <form id="cms" class="row g-3" style="padding-top: 0px;" method="POST"
         action="<?php echo $this->getUrl()->getUrl('save'); ?>">
         <div class="col-md-4">
             <label for="Title" class="form-label"><strong>Title*</strong></label>
@@ -33,7 +33,7 @@
             </div>
         </div>
         <div class="col-12">
-            <input type="submit" class="btn btn-primary" value="Save">
+            <button type="button" class="btn btn-primary" onclick="mage.setForm('#cms').load()">Save</button>
         </div>
 
     </form>
